@@ -1,16 +1,16 @@
 #!/bin/sh
 
-ln -s ~/dotfiles/.zshrc ~/
-ln -s ~/dotfiles/.bashrc ~/
-ln -s ~/dotfiles/.Xdefaults ~/
-ln -s ~/dotfiles/.xinitrc ~/
-ln -s ~/dotfiles/.vim ~/
-ln -s ~/dotfiles/.vimrc ~/
+ln -si ~/.dotfiles/.zshrc ~/
+ln -si ~/.dotfiles/.bashrc ~/
+ln -si ~/.dotfiles/.Xdefaults ~/
+ln -si ~/.dotfiles/.xinitrc ~/
+ln -si ~/.dotfiles/.vim ~/
+ln -si ~/.dotfiles/.vimrc ~/
 
 mkdir -p ~/.config/i3
 mkdir -p ~/.config/ranger
 mkdir -p ~/.config/sxhkd
-ln -s ~/dotfiles/i3/config ~/.config/i3/config
-ln -s ~/dotfiles/i3/i3blocks.conf ~/.config/i3/i3blocks.conf
-ln -s ~/dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
-ln -s ~/dotfiles/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
+ln -si ~/.dotfiles/i3/config ~/.config/i3/config
+ln -si ~/.dotfiles/i3/i3blocks.conf ~/.config/i3/i3blocks.conf
+ln -si ~/.dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
+ln -si ~/.dotfiles/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
