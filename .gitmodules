@@ -1,3 +1,12 @@
 [submodule ".vim/bundle/fugitive"]
 	path = .vim/bundle/fugitive
 	url = http://github.com/tpope/vim-fugitive.git
+[submodule ".vim/bundle/vim-latex-live-preview"]
+	path = .vim/bundle/vim-latex-live-preview
+	url = https://github.com/xuhdev/vim-latex-live-preview.git
+[submodule ".vim/bundle/supertab"]
+	path = .vim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
