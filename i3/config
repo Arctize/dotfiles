@@ -1,0 +1,167 @@
+# variables
+set $mod Mod4
+set $up k
+set $down j
+set $right l
+set $left h
+
+# autostart
+exec compton -bcf --vsync opengl --config /dev/null
+exec_always feh --bg-tile ~/Pictures/wallpaper.png
+exec_always xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
+
+# shortcuts
+bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
+bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn Sans-10
+bindsym $mod+Return		exec	urxvtc
+bindsym $mod+Shift+Return	exec	i3-sensible-terminal
+bindsym $mod+c 			exec 	qutebrowser
+bindsym $mod+Shift+c 		exec 	chromium
+bindsym $mod+b			exec	pavucontrol
+bindsym $mod+w			exec	telegram-desktop
+bindsym Print			exec 	import -window root ~/$(date +%F_%H%M%S).png
+bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date +%F_%H%M%S).png
+
+# gaps
+#smart_gaps on
+gaps inner 5
+gaps outer 10
+
+# style
+smart_borders on
+#font pango:Sans 10
+font fixed
+for_window [class="^.*"] border pixel 0
+for_window [class="^.*xvt"] border pixel 1
+for_window [class=(?i)pavucontrol] floating enable
+for_window [class=(?i)telegram-desktop] floating enable
+for_window [window_role=pop-up] floating enable
+
+# close/kill
+bindsym $mod+q		kill
+bindsym $mod+Shift+q 	exec xdotool getwindowfocus windowkill
+
+# fullscreen
+bindsym $mod+f	fullscreen
+bindsym $mod+Shift+f fullscreen global
+
+# change focus
+bindsym $mod+$left	focus left
+bindsym $mod+$down	focus down
+bindsym $mod+$up	focus up
+bindsym $mod+$right	focus right
+
+# move focused window
+bindsym $mod+Shift+$left	move left	100px
+bindsym $mod+Shift+$down	move down	30px
+bindsym $mod+Shift+$up		move up		30px
+bindsym $mod+Shift+$right	move right	100px
+
+# change split orientation
+bindsym $mod+v	split v
+bindsym $mod+g	split h
+
+# floating
+floating_modifier $mod
+bindsym $mod+Shift+space	floating toggle
+bindsym $mod+space		focus mode_toggle
+
+# scratchpad
+bindsym $mod+Shift+s 	move scratchpad
+bindsym $mod+s 		scratchpad show
+
+# marks
+bindsym $mod+a  	exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go to: '
+bindsym $mod+shift+a	exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+
+# switch workspace
+bindsym Mod1+Ctrl+$right	workspace next
+bindsym Mod1+Ctrl+$left 	workspace prev
+bindsym $mod+1		  	workspace 1
+bindsym $mod+2			workspace 2
+bindsym $mod+3			workspace 3
+bindsym $mod+4			workspace 4
+bindsym $mod+5			workspace 5
+bindsym $mod+6			workspace 6
+bindsym $mod+7			workspace 7
+bindsym $mod+8			workspace 8
+bindsym $mod+9			workspace 9
+bindsym $mod+0			workspace 10
+
+# move focused window to workspace
+bindsym $mod+Shift+1		move container to workspace 1
+bindsym $mod+Shift+2		move container to workspace 2
+bindsym $mod+Shift+3		move container to workspace 3
+bindsym $mod+Shift+4		move container to workspace 4
+bindsym $mod+Shift+5		move container to workspace 5
+bindsym $mod+Shift+6		move container to workspace 6
+bindsym $mod+Shift+7		move container to workspace 7
+bindsym $mod+Shift+8		move container to workspace 8
+bindsym $mod+Shift+9		move container to workspace 9
+bindsym $mod+Shift+0		move container to workspace 10
+
+# volume control
+bindsym XF86AudioLowerVolume		exec amixer -q set Master 4%- 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym Shift+XF86AudioLowerVolume	exec amixer -q set Master 0% 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume		exec amixer -q set Master 4%+ 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym Shift+XF86AudioRaiseVolume	exec amixer -q set Master 100% 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute			exec amixer -q set Master toggle 	&& pkill -RTMIN+1 i3blocks
+
+# brightness controls
+bindsym XF86MonBrightnessUp		exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown		exec xbacklight -dec 10
+bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
+bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
+
+# restart
+bindsym $mod+Shift+r	restart
+
+# sysmenu
+bindsym $mod+Escape mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" 
+mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
+        bindsym e exec i3 exit
+	bindsym r exec systemctl reboot
+        bindsym s exec systemctl poweroff
+        bindsym l exec i3lock -neti ~/.wallpaper.png, mode "default"
+        bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+# resize mode
+bindsym $mod+r mode "Resize/Gaps mode"
+mode "Resize/Gaps mode" {
+        bindsym $left resize shrink width 10 px or 10 ppt
+        bindsym $down resize grow height 10 px or 10 ppt
+        bindsym $up resize shrink height 10 px or 10 ppt
+        bindsym $right resize grow width 10 px or 10 ppt
+	bindsym Shift+$left gaps outer all minus 5
+	bindsym Shift+$right gaps outer all plus 5
+	bindsym Shift+$down gaps inner all minus 5
+	bindsym Shift+$up gaps inner all plus 5
+        bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+#colors             	border  backgr. text    indicator
+client.focused      	#ff0000 #ffffff #ffffff #ffffff
+client.focused_inactive	#333333 #333333 #ffffff #333333
+client.unfocused     	#333333 #222222 #888888 #ff0000
+client.urgent        	#2f343a #900000 #ffffff #ffffff
+
+# i3bar
+bar {
+	i3bar_command  i3bar
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	height 18
+	#mode hide
+	position bottom
+	colors {
+		background #333333
+		statusline #999999
+		separator  #333333
+		focused_workspace  #333333 #333333 #ffffff
+		active_workspace   #333333 #333333 #ffffff
+		inactive_workspace #333333 #333333 #666666
+		urgent_workspace   #666666 #333333 #ffffff
+	}
+}

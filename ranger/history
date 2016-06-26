@@ -1,0 +1,31 @@
+cd /mnt
+cd Pictures/
+cd /home/patrick/Pictures/
+wallgen %f
+shell wallgen %f
+rename sunset.jpg
+cd /home/patrick/mnt/home/patrick/.local/share/Steam/steamapps/common/
+cd /home/patrick/mnt/home/patrick/.local/share/Steam/steamapps/common
+cd /home/patrick/.local/share/Steam/steamapps/common
+cd /home/patrick/mnt/home/patrick/.local/share/Steam/steamapps
+cd mnt
+cd /home/patrick/.local/share/Steam/steamapps/common/
+cd /home/patrick/mnt/home/patrick
+cd /mnt/home/patrick/
+cd .lo
+cd .local/share/aspyr-media/
+rename save0007.sav
+cd nfs
+cd .config/i3/
+shell mkdir i3
+cd ~
+cd .config/
+cd /home/patrick/nfs/
+search qute
+cd ../nfs/home/patrick/dotfiles/
+rename qutebrowser
+
+cd /home/patrick/.config/
+cd i3
+cd /home/patrick/nfs/home/patrick/dotfiles/
+delete
