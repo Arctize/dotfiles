@@ -11,11 +11,7 @@ compinit
 setopt autocd extendedglob nomatch notify nocorrectall
 
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg_bold[blue]%}%~ %{$reset_color%}%# "
-export PATH=$PATH:~/bin/:~/.config/bspwm/panel
 export EDITOR=vim
-export PAGER=w3m
-export MANPAGER=w3m
-export PANEL_FIFO=/tmp/panel-fifo
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
