@@ -6,7 +6,7 @@ urxvtd -q -o -f &
 #feh --bg-tile ~/.wallpaper.png &
 #xsetroot -cursor_name left_ptr &
 unclutter --timeout 1 -b &
-setxkbmap us -variant dvp
+#setxkbmap us -variant dvp
 xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
 #sxhkd &
 exec i3
