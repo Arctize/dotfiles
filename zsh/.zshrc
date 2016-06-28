@@ -12,6 +12,7 @@ setopt autocd extendedglob nomatch notify nocorrectall
 
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg_bold[blue]%}%~ %{$reset_color%}%# "
 export EDITOR=vim
+export PATH=$PATH:~/bin
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
