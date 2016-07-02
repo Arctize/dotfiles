@@ -15,10 +15,12 @@ export EDITOR=vim
 export PATH=$PATH:~/bin
 
 alias ls='ls --color=auto'
+alias la='ls -A'
+alias ll='ls -Alh'
+alias l='ls'
 alias grep='grep --color=auto'
 alias peerflix='peerflix --mpv'
 
 bindkey -M viins '^r' history-incremental-search-backward
 
 zstyle ':completion:*:(ssh|scp|sftp):*' hosts $(awk '{print $1}' ~/.ssh/known_hosts 2>/dev/null)
-
