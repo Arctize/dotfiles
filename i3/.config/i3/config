@@ -6,7 +6,7 @@ set $right l
 set $left h
 
 # autostart
-exec compton -bc --config /dev/null
+exec compton -bcr20 --config /dev/null
 exec_always feh --bg-tile ~/Pictures/wallpaper.png
 
 # shortcuts
@@ -23,7 +23,7 @@ bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date 
 
 # gaps
 #smart_gaps on
-gaps inner 5
+gaps inner 10
 gaps outer 10
 
 # style
