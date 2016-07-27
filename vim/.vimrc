@@ -12,12 +12,13 @@ set relativenumber
 set nocompatible
 set scrolloff=1
 
-set listchars=tab:▸\ ,eol:¬
-set list
+"set listchars=tab:▸\ ,eol:¬
+"set list
 "set expandtab
 "set softtabstop=8
 set hidden
 
+command W w !sudo tee % > /dev/null
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
