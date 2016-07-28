@@ -11,7 +11,7 @@ set -o vi
 PS1="\[\033[31m\]\u\033[0m\]@\033[32m\]\h \033[1;34m\]\w\[\033[0m \]$ "
 
 export EDITOR=vim
-export PATH=$PATH:~/bin/
+export PATH="/usr/lib/ccache/bin/:$PATH:~/bin/"
 
 alias ls='ls --color=auto'
 alias la='ls -A'
