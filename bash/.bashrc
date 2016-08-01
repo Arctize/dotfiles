@@ -47,6 +47,13 @@ PS1="\[\033[31m\]\u\033[0m\]@\033[32m\]\h \033[1;34m\]\w\[\033[0m \]$ "
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# set EDITOR variable
+if hash vim 2>/dev/null; then
+	export EDITOR=vim
+else
+	export EDITOR=vi
+fi
+
 # Alias definitions.
 alias ll='ls -lh'
 alias la='ls -A'
