@@ -7,6 +7,9 @@ urxvtd -q -o -f &
 xsetroot -cursor_name left_ptr &
 unclutter --timeout 5 -b &
 
+#Swap super and alt keys
+setxkbmap -option 'altwin:swap_lalt_lwin'
+
 #Use Caps as ESC and Ctrl modifier if xcape is installed
 #otherwise just map it to ESC
 if hash xcape 2>/dev/null; then
