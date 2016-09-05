@@ -1,12 +1,24 @@
 # variables
 set $mod Mod4
-set $up k
-set $down j
-set $right l
-set $left h
+
+set $up period
+set $down e
+set $right u
+set $left o  
+
+set $1 m
+set $2 w
+set $3 v
+set $4 h
+set $5 t
+set $6 n
+set $7 g
+set $8 c
+set $9 r
 
 # autostart
-exec compton -bcr20 --config /dev/null
+exec setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY
+exec xcompmgr -fc -o.8 -D3
 exec_always feh --bg-tile ~/Pictures/wallpaper.png
 
 # shortcuts
@@ -14,10 +26,6 @@ bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
 bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn Sans-10
 bindsym $mod+Return		exec	urxvtc
 bindsym $mod+Shift+Return	exec	i3-sensible-terminal
-bindsym $mod+c 			exec 	qutebrowser
-bindsym $mod+Shift+c 		exec 	chromium
-bindsym $mod+b			exec	pavucontrol
-bindsym $mod+w			exec	telegram-desktop
 bindsym Print			exec 	import -window root ~/$(date +%F_%H%M%S).png
 bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date +%F_%H%M%S).png
 
@@ -26,7 +34,6 @@ bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date 
 gaps inner 10
 gaps outer 10
 
-# style
 smart_borders on
 #font pango:Sans 10
 font fixed
@@ -57,8 +64,8 @@ bindsym $mod+Shift+$up		move up		30px
 bindsym $mod+Shift+$right	move right	100px
 
 # change split orientation
-bindsym $mod+v	split v
-bindsym $mod+g	split h
+bindsym $mod+comma	split v
+bindsym $mod+p 		split h
 
 # floating
 floating_modifier $mod
@@ -76,28 +83,26 @@ bindsym $mod+shift+a	exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
 # switch workspace
 bindsym Mod1+Ctrl+$right	workspace next
 bindsym Mod1+Ctrl+$left 	workspace prev
-bindsym $mod+1		  	workspace 1
-bindsym $mod+2			workspace 2
-bindsym $mod+3			workspace 3
-bindsym $mod+4			workspace 4
-bindsym $mod+5			workspace 5
-bindsym $mod+6			workspace 6
-bindsym $mod+7			workspace 7
-bindsym $mod+8			workspace 8
-bindsym $mod+9			workspace 9
-bindsym $mod+0			workspace 10
+bindsym $mod+$1		  	workspace 1
+bindsym $mod+$2			workspace 2
+bindsym $mod+$3			workspace 3
+bindsym $mod+$4			workspace 4
+bindsym $mod+$5			workspace 5
+bindsym $mod+$6			workspace 6
+bindsym $mod+$7			workspace 7
+bindsym $mod+$8			workspace 8
+bindsym $mod+$9			workspace 9
 
 # move focused window to workspace
-bindsym $mod+Shift+1		move container to workspace 1
-bindsym $mod+Shift+2		move container to workspace 2
-bindsym $mod+Shift+3		move container to workspace 3
-bindsym $mod+Shift+4		move container to workspace 4
-bindsym $mod+Shift+5		move container to workspace 5
-bindsym $mod+Shift+6		move container to workspace 6
-bindsym $mod+Shift+7		move container to workspace 7
-bindsym $mod+Shift+8		move container to workspace 8
-bindsym $mod+Shift+9		move container to workspace 9
-bindsym $mod+Shift+0		move container to workspace 10
+bindsym $mod+Shift+$1		move container to workspace 1
+bindsym $mod+Shift+$2		move container to workspace 2
+bindsym $mod+Shift+$3		move container to workspace 3
+bindsym $mod+Shift+$4		move container to workspace 4
+bindsym $mod+Shift+$5		move container to workspace 5
+bindsym $mod+Shift+$6		move container to workspace 6
+bindsym $mod+Shift+$7		move container to workspace 7
+bindsym $mod+Shift+$8		move container to workspace 8
+bindsym $mod+Shift+$9		move container to workspace 9
 
 # volume control
 bindsym XF86AudioLowerVolume		exec amixer -q set Master 4%- 	unmute 	&& pkill -RTMIN+1 i3blocks
@@ -113,7 +118,8 @@ bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
 bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
 
 # restart
-bindsym $mod+Shift+r	restart
+bindsym $mod+Shift+slash	restart
+bindsym $mod+Shift+equal 	reload
 
 # sysmenu
 bindsym $mod+Escape mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" 
@@ -127,7 +133,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
 }
 
 # resize mode
-bindsym $mod+r mode "Resize/Gaps mode"
+bindsym $mod+z mode "Resize/Gaps mode"
 mode "Resize/Gaps mode" {
         bindsym $left resize shrink width 10 px or 10 ppt
         bindsym $down resize grow height 10 px or 10 ppt
@@ -152,15 +158,16 @@ bar {
 	i3bar_command  i3bar
 	status_command i3blocks -c ~/.config/i3/i3blocks.conf
 	height 18
-	#mode hide
-	position bottom
+	mode hide
+	position top
 	colors {
-		background #333333
-		statusline #999999
-		separator  #333333
-		focused_workspace  #333333 #333333 #ffffff
-		active_workspace   #333333 #333333 #ffffff
-		inactive_workspace #333333 #333333 #666666
-		urgent_workspace   #666666 #333333 #ffffff
+		set $bg #073642
+		background $bg
+		statusline #CCCCCC
+		separator  #b58900
+		focused_workspace  $bg $bg #ffffff
+		active_workspace   $bg $bg #ffffff
+		inactive_workspace $bg $bg #b58900
+		urgent_workspace   #b58900 $bg #ffffff
 	}
 }
