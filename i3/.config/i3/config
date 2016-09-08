@@ -17,7 +17,8 @@ set $8 c
 set $9 r
 
 # autostart
-exec setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY
+exec_always setxkbmap -option 'altwin:swap_lalt_lwin,caps:ctrl_modifier'
+exec_always setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY
 exec xcompmgr -fc -o.8 -D3
 exec_always feh --bg-tile ~/Pictures/wallpaper.png
 
@@ -35,7 +36,7 @@ gaps inner 10
 gaps outer 10
 
 smart_borders on
-#font pango:Sans 10
+#font pango:Sans 16
 font fixed
 for_window [class="^.*"] border pixel 0
 for_window [class="^.*xvt"] border pixel 1
