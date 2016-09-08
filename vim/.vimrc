@@ -9,8 +9,13 @@ set incsearch
 set ignorecase
 set smartcase
 set relativenumber
+set number
 set nocompatible
 set scrolloff=1
+set noswapfile
+
+let &t_SI = "\<Esc>[6 q"
+let &t_EI = "\<Esc>[2 q"
 
 "set listchars=tab:▸\ ,eol:¬
 "set list
