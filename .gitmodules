@@ -10,3 +10,6 @@
 [submodule ".vim/bundle/nerdtree"]
 	path = vim/.vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
+[submodule "xkb/.xkb/mwb-layout"]
+	path = xkb/.xkb/symbols
+	url = https://github.com/MatteoWickiBande/mwb-layout
