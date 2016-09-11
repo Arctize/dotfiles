@@ -17,29 +17,26 @@ set $8 c
 set $9 r
 
 # autostart
-exec_always setxkbmap -option 'altwin:swap_lalt_lwin,caps:ctrl_modifier'
-exec_always setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY
-exec xcompmgr -fc -o.8 -D3
-exec_always feh --bg-tile ~/Pictures/wallpaper.png
+exec xcompmgr -c -o.8
+exec_always feh --bg-fill ~/Pictures/wallpaper.png
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
 bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn Sans-10
-bindsym $mod+Return		exec	urxvtc
+bindsym $mod+Return		exec	/home/patrick/git/st/st
 bindsym $mod+Shift+Return	exec	i3-sensible-terminal
 bindsym Print			exec 	import -window root ~/$(date +%F_%H%M%S).png
 bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date +%F_%H%M%S).png
 
 # gaps
-#smart_gaps on
 gaps inner 10
 gaps outer 10
 
+# style
 smart_borders on
-#font pango:Sans 16
-font fixed
+font pango:Unifont
 for_window [class="^.*"] border pixel 0
-for_window [class="^.*xvt"] border pixel 1
+for_window [class="^st-256color"] border pixel 1
 for_window [class=(?i)pavucontrol] floating enable
 for_window [class=(?i)telegram*] floating enable
 for_window [window_role=pop-up] floating enable
@@ -119,8 +116,8 @@ bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
 bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
 
 # restart
+bindsym $mod+slash 		reload
 bindsym $mod+Shift+slash	restart
-bindsym $mod+Shift+equal 	reload
 
 # sysmenu
 bindsym $mod+Escape mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" 
@@ -128,7 +125,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
         bindsym e exec i3 exit
 	bindsym r exec systemctl reboot
         bindsym s exec systemctl poweroff
-        bindsym l exec i3lock -neti ~/.wallpaper.png, mode "default"
+        bindsym l exec slock
         bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
