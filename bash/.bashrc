@@ -42,7 +42,29 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # Colored prompt
-PS1="\[\033[31m\]\u\033[0m\]@\033[32m\]\h \033[1;34m\]\w\[\033[0m \]$ "
+#PS1="\[\033[31m\]\u\033[0m\]@\033[32m\]\h \033[1;34m\]\w\[\033[0m \]$ "
+function exitstatus {
+
+	EXITSTATUS="$?"
+	BOLD="\[\033[1m\]"
+	RED="\[\033[1;31m\]"
+	GREEN="\[\e[32;1m\]"
+	BLUE="\[\e[34;1m\]"
+	OFF="\[\033[m\]"
+
+	if [ "${EXITSTATUS}" -eq 0 ]
+	then
+		status="${BOLD}${GREEN}:)${OFF}"
+	else
+		status="${BOLD}${RED}:(${OFF}"
+	fi
+
+	PS1="\u@\h ${BLUE}\W${OFF} ${status} "
+
+	PS2="${BOLD}>${OFF} "
+}
+
+PROMPT_COMMAND=exitstatus
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -64,9 +86,9 @@ alias peerflix='peerflix --mpv'
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
