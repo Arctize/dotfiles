@@ -12,6 +12,6 @@ else
 	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 fi
 
-setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY
+setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY 2>/dev/null
 
 exec i3
