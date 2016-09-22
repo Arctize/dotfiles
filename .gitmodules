@@ -13,3 +13,6 @@
 [submodule "xkb/.xkb/mwb-layout"]
 	path = xkb/.xkb/symbols
 	url = https://github.com/MatteoWickiBande/mwb-layout
+[submodule "vim/.vim/bundle/clang_complete"]
+	path = vim/.vim/bundle/clang_complete
+	url = https://github.com/rip-rip/clang_complete

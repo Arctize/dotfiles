@@ -1,3 +1,4 @@
+filetype off
 execute pathogen#infect()
 filetype plugin indent on
 syntax on
@@ -28,3 +29,5 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
