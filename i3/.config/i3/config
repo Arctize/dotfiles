@@ -17,7 +17,6 @@ set $8 c
 set $9 r
 
 # autostart
-exec compton --config /dev/null -c
 exec_always feh --bg-fill ~/Pictures/wallpaper.png
 
 # shortcuts
