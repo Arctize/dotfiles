@@ -31,3 +31,4 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:livepreview_previewer = 'zathura'
