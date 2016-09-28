@@ -28,6 +28,8 @@ shopt -s autocd
 
 # enable vi mode
 set -o vi
+bind -m vi-insert "\c-l":clear-screen
+bind 'set show-mode-in-prompt on'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
