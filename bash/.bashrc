@@ -94,3 +94,7 @@ if ! shopt -oq posix; then
 		. /etc/bash_completion
 	fi
 fi
+
+# Enable scripts for base16 color schemes
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
