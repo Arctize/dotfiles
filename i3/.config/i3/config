@@ -36,7 +36,7 @@ gaps outer 10
 smart_borders on
 font pango:Unifont
 for_window [class="^.*"] border pixel 0
-for_window [class="^st-256color"] border pixel 1
+for_window [class="^xterm-256color"] border pixel 1
 for_window [class="^.*xvt"] border pixel 3
 for_window [class=(?i)pavucontrol] floating enable
 for_window [class=(?i)telegram*] floating enable
@@ -154,15 +154,15 @@ client.urgent        	#2f343a #900000 #ffffff #ffffff
 
 # i3bar
 bar {
-	i3bar_command  i3bar
+	i3bar_command  i3bar -t
 	status_command i3blocks -c ~/.config/i3/i3blocks.conf
 	height 18
 	mode hide
 	position top
 	colors {
-		set $bg #073642
+		set $bg #33333300
 		background $bg
-		statusline #CCCCCC
+		statusline #ffffff
 		separator  #b58900
 		focused_workspace  $bg $bg #ffffff
 		active_workspace   $bg $bg #ffffff
