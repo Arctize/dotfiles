@@ -12,6 +12,10 @@ else
 	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 fi
 
+#Use mwb-layout
 setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY 2>/dev/null
+
+#Start compton and fork to background
+compton --config ~/.config/compton.conf -b
 
 exec i3
