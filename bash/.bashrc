@@ -98,3 +98,14 @@ fi
 # Enable scripts for base16 color schemes
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# Move prompt to bottom resp. top of the terminal
+down () {
+	for i in $(seq $(tput lines)); do echo; done
+	bind -x '"\C-l": clear; down'
+}
+
+up () {
+	bind -x '"\C-l": clear'
+	clear
+}
