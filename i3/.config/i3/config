@@ -17,15 +17,15 @@ set $8 c
 set $9 r
 
 # autostart
-exec_always feh --bg-fill ~/Pictures/wallpaper.png
+exec_always feh --bg-fill $WALLPAPER
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
 bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn Sans-10
 bindsym $mod+Return		exec	/home/patrick/git/st/st
 bindsym $mod+Shift+Return	exec	/home/patrick/git/st/st -e tmux
-bindsym Print			exec 	import -window root ~/$(date +%F_%H%M%S).png
-bindsym Shift+Print		exec 	import -window $(xdotool getwindowfocus -f) ~/$(date +%F_%H%M%S).png
+bindsym Print			exec 	scrot
+bindsym Shift+Print		exec 	scrot -u
 bindsym $mod+dollar 		exec 	xcalib -invert -alter
 
 # gaps
@@ -125,7 +125,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
         bindsym e exec i3 exit
 	bindsym r exec systemctl reboot
         bindsym s exec systemctl poweroff
-        bindsym l exec slock
+        bindsym l exec slock; mode "default"
         bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
