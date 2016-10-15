@@ -17,7 +17,7 @@ set $8 c
 set $9 r
 
 # autostart
-exec_always feh --bg-fill '$WALLPAPER'
+exec_always feh --bg-fill $WALLPAPER
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
