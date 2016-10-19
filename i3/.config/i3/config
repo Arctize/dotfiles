@@ -21,7 +21,7 @@ exec_always feh --bg-fill $WALLPAPER
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
-bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn Sans-10
+bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn unifont
 bindsym $mod+Return		exec	/home/patrick/git/st/st
 bindsym $mod+Shift+Return	exec	/home/patrick/git/st/st -e tmux
 bindsym Print			exec 	scrot
@@ -29,8 +29,8 @@ bindsym Shift+Print		exec 	scrot -u
 bindsym $mod+dollar 		exec 	xcalib -invert -alter
 
 # gaps
-gaps inner 10
-gaps outer 10
+gaps inner 12
+gaps outer 12
 
 # style
 smart_borders on
@@ -155,16 +155,17 @@ client.urgent        	#2f343a #900000 #ffffff #ffffff
 bar {
 	i3bar_command  i3bar -t
 	status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	height 18
+	height 20
 	mode hide
 	position top
 	colors {
 		set $bg #33333300
+		set $fg #ffffff
 		background $bg
-		statusline #ffffff
+		statusline $fg
 		separator  #b58900
-		focused_workspace  $bg $bg #ffffff
-		active_workspace   $bg $bg #ffffff
+		focused_workspace  $bg $bg $fg
+		active_workspace   $bg $bg $fg
 		inactive_workspace $bg $bg #b58900
 		urgent_workspace   #b58900 $bg #ffffff
 	}
