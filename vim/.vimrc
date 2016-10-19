@@ -14,6 +14,7 @@ set number
 set nocompatible
 set scrolloff=1
 set noswapfile
+set showcmd
 
 let &t_SI = "\<Esc>[6 q"
 let &t_EI = "\<Esc>[2 q"
@@ -30,5 +31,4 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-"let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 let g:livepreview_previewer = 'zathura'
