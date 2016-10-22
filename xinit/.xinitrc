@@ -18,7 +18,7 @@ setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY 2>/dev/null
 #Start compton and fork to background
 compton --config ~/.config/compton.conf -b
 
-#Hide cursor after 1 sec
+#Hide cursor after 5 sec
 unclutter -idle 5 -root -noevents &
 
-exec i3
+exec bspwm

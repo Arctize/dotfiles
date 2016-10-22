@@ -1,0 +1,38 @@
+#! /bin/sh
+
+pkill sxhkd; sxhkd &
+
+# Style settings (have to be applied before assigning desktops)
+bspc config border_width         	1
+bspc config window_gap          	20
+
+# Host specific monitor configuration
+if [[ $(hostname) == *Desk ]]; then
+	dmon
+	bspc monitor -f DP2
+	bspc monitor -d 1 3 5 7 9
+	bspc monitor -f HDMI2
+	bspc monitor -d 2 4 6 8
+	bspc desktop -f 1
+
+elif [[ $(hostname) == *Book ]]; then
+	smon
+	bspc monitor -d 1 2 3 4 5 6 7 8 9
+fi
+
+# Prevents cursor from being just an 'x'
+xsetroot -cursor_name left_ptr
+
+bspc config borderless_monocle 		true
+bspc config gapless_monocle      	true
+bspc config split_ratio          	0.50
+
+bspc config focus_follows_pointer 	true
+bspc config pointer_follows_focus 	true
+bspc config focus_by_distance    	true
+bspc config history_aware_focus  	true
+
+bspc rule -a "*" border=off
+bspc rule -a st-256color border=on
+bspc rule -a TelegramDesktop state=pseudo_tiled
+bspc rule -a Pavucontrol state=pseudo_tiled
