@@ -14,6 +14,10 @@ super + d
 super + shift + d
 	dmenu_run
 
+# Lock screen
+super + l
+	slock
+
 # Volume control
 XF86Audio{Raise,Lower}Volume
 	amixer -q set Master {4%+,4%-} unmute
