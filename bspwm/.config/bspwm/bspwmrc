@@ -34,5 +34,5 @@ bspc config history_aware_focus  	true
 
 bspc rule -a "*" border=off
 bspc rule -a st-256color border=on
-bspc rule -a TelegramDesktop state=pseudo_tiled
-bspc rule -a Pavucontrol state=pseudo_tiled
+bspc rule -a TelegramDesktop state=floating
+bspc rule -a Pavucontrol state=floating
