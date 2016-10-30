@@ -4,7 +4,7 @@ pkill sxhkd; sxhkd &
 
 # Style settings (have to be applied before assigning desktops)
 bspc config border_width         	1
-bspc config window_gap          	20
+bspc config window_gap          	30
 
 # Host specific monitor configuration
 if [[ $(hostname) == *Desk ]]; then
