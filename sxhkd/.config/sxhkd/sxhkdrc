@@ -29,6 +29,13 @@ XF86AudioMute
 XF86MonBrightness{Up,Down}
 	xbacklight {-inc,-dec} 10
 
+# Screenshots
+Print
+	scrot
+
+shift + Print
+	scrot -u
+
 
 ##### BSPWM SPECIFIC ######
 
