@@ -40,7 +40,7 @@ shift + Print
 ##### BSPWM SPECIFIC ######
 
 # Reload bspwm
-super + shift + r
+super + shift + slash
 	~/.config/bspwm/bspwmrc
 
 # Quit bspwm
