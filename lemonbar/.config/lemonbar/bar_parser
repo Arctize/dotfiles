@@ -1,0 +1,81 @@
+#!/bin/sh
+
+source ./bar_colors
+
+num_mon=$(bspc query -M | wc -l)
+
+PADDING=" "
+SEP="   "
+
+while read -r line; do
+	case $line in
+		D*)
+			date="$PADDING%{F$fg}%{B$bg}${line#?}$PADDING%{F-}%{B-}"
+			;;
+		card*Master*)
+			vol="$PADDING%{F$fg}%{B$bg}$(vol)$PADDING%{F-}%{B-}"
+			;;
+		M*)
+			mem="$SEP$PADDING%{F$fg}%{B$bg}${line#?}$PADDING%{F-}%{B-}"
+			;;
+		B*)
+			batt="$SEP$PADDING%{F$fg}%{B$bg}${line#?}$PADDING%{F-}%{B-}"
+			;;
+		I*)
+			iip="$SEP$PADDING%{F$fg}%{B$bg}${line#?}$PADDING%{F-}%{B-}"
+			;;
+		T*)
+			temp="$SEP$PADDING%{F$fg}%{B$bg}${line#?}$PADDING%{F-}%{B-}"
+			;;
+		W*)
+			# bspwm internal state
+			wm_infos=""
+			IFS=':'
+			set -- ${line#?}
+			while [ $# -gt 0 ] ; do
+				item=$1
+				name=${item#?}
+				case $item in
+					M*)
+						# active monitor
+						if [ $num_mon -gt 1 ] ; then
+							wm_infos="$wm_infos %{F$active_mon_fg}%{B$active_mon_bg}%{+u}$PADDING${name}$PADDING%{-u}%{B-}%{F-} "
+						fi
+						;;
+					m*)
+						# inactive monitor
+						if [ $num_mon -gt 1 ] ; then
+							wm_infos="$wm_infos %{F$inactive_mon_fg}%{B$inactive_mon_bg}$PADDING${name}$PADDING%{B-}%{F-} "
+						fi
+						;;
+					O*)
+						# focused occupied desktop
+						wm_infos="${wm_infos}%{F$focus_occ_fg}%{B$focus_occ_bg}%{U$fg}%{+u}$PADDING${name}$PADDING%{-u}%{B-}%{F-}"
+						;;
+					F*)
+						# focused free desktop
+						wm_infos="${wm_infos}%{F$focus_free_fg}%{B$focus_free_bg}%{U$fg}%{+u}$PADDING${name}$PADDING%{-u}%{B-}%{F-}"
+						;;
+					U*)
+						# focused urgent desktop
+						wm_infos="${wm_infos}%{F$focus_urgent_fg}%{B$focus_urgent_bg}%{U$fg}%{+u}$PADDING${name}$PADDING%{-u}%{B-}%{F-}"
+						;;
+					o*)
+						# occupied desktop
+						wm_infos="${wm_infos}%{F$occ_fg}%{B$occ_bg}%{A:bspc desktop -f ${name}:}$PADDING${name}$PADDING%{A}%{B-}%{F-}"
+						;;
+					f*)
+						# free desktop
+						wm_infos="${wm_infos}%{F$free_fg}%{B$free_bg}%{A:bspc desktop -f ${name}:}$PADDING${name}$PADDING%{A}%{B-}%{F-}"
+						;;
+					u*)
+						# urgent desktop
+						wm_infos="${wm_infos}%{F$urgent_fg}%{B$urgent_bg}$PADDING${name}$PADDING%{B-}%{F-}"
+						;;
+				esac
+				shift
+			done
+			;;
+	esac
+	printf "%s\n" "%{l}${wm_infos}${iip}${mem}${temp}%{c}${date}%{r}${batt}${vol}"
+done

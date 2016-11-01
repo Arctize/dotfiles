@@ -1,0 +1,36 @@
+#!/bin/sh
+
+
+PANEL_FIFO=/tmp/panel-fifo
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+#screen_width=$(xdpyinfo |grep dim | sed 's/x.*//' | sed 's/[^0-9]*//')
+screen_width=$(xrandr | grep -oP '[0-9]{4}' | head -n1)
+let width=$screen_width-60
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc subscribe > "$PANEL_FIFO" &
+
+while true; do
+	echo 'D' $(clock); sleep 1
+done > $PANEL_FIFO &
+
+# Only run the following if information about a battery is available
+if [ "$(ls /sys/class/power_supply)" ]; then
+	while true ; do
+		echo 'B' $(batt); sleep 3
+	done > "$PANEL_FIFO" &
+fi
+
+# Pipe alsactl monitor to fifo, so volume gets updated only on an actual change
+stdbuf -oL /usr/sbin/alsactl monitor > "$PANEL_FIFO" &
+echo "card Master init" > "$PANEL_FIFO" &
+
+cat "$PANEL_FIFO" | ./bar_parser | lemonbar -g "$width"x16+30+7 -u2
