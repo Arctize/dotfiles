@@ -16,11 +16,12 @@ set scrolloff=1
 set noswapfile
 set showcmd
 
+set list
+set listchars=tab:▸\ ,trail:¬
+
 let &t_SI = "\<Esc>[6 q"
 let &t_EI = "\<Esc>[2 q"
 
-"set listchars=tab:▸\ ,eol:¬
-"set list
 "set expandtab
 "set softtabstop=8
 set hidden
