@@ -19,8 +19,11 @@ set showcmd
 set list
 set listchars=tab:▸\ ,trail:¬
 
-let &t_SI = "\<Esc>[6 q"
-let &t_EI = "\<Esc>[2 q"
+"let &t_SI = "\<Esc>[6 q"
+"let &t_EI = "\<Esc>[2 q"
+
+:autocmd InsertEnter * set cul
+:autocmd InsertLeave * set nocul
 
 "set expandtab
 "set softtabstop=8

@@ -31,6 +31,10 @@ set -o vi
 bind -m vi-insert "\c-l":clear-screen
 bind 'set show-mode-in-prompt on'
 
+# Change cursor depending on mode
+bind 'set vi-cmd-mode-string "\x1b[\x30 q"'
+bind 'set vi-ins-mode-string "\x1b[\x35 q"'
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -56,12 +60,12 @@ function exitstatus {
 
 	if [ "${EXITSTATUS}" -eq 0 ]
 	then
-		status="${BOLD}${GREEN}:)${OFF}"
+		status="${BOLD}${GREEN}\$${OFF}"
 	else
-		status="${BOLD}${RED}:(${OFF}"
+		status="${BOLD}${RED}\$${OFF}"
 	fi
 
-	PS1="\u@\h ${BLUE}\W${OFF} ${status} "
+	PS1="\h ${BLUE}\W${OFF} ${status} "
 
 	PS2="${BOLD}>${OFF} "
 }
