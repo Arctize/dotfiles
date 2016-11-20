@@ -15,15 +15,16 @@ set nocompatible
 set scrolloff=1
 set noswapfile
 set showcmd
+set cul
 
 set list
-set listchars=tab:▸\ ,trail:¬
+set listchars=tab:▸\ ,trail:¬,nbsp:¬
 
-"let &t_SI = "\<Esc>[6 q"
-"let &t_EI = "\<Esc>[2 q"
+let &t_SI = "\<Esc>[6 q"
+let &t_EI = "\<Esc>[2 q"
 
-:autocmd InsertEnter * set cul
-:autocmd InsertLeave * set nocul
+":autocmd InsertEnter * set cul
+":autocmd InsertLeave * set nocul
 
 "set expandtab
 "set softtabstop=8
