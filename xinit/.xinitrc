@@ -1,24 +1,21 @@
 #!/bin/sh
 
-#Swap super and alt keys
-setxkbmap -option 'altwin:swap_lalt_lwin'
-
-#Use Caps as ESC and Ctrl modifier if xcape is installed
-#otherwise just map it to ESC
-if hash xcape 2>/dev/null; then
-	setxkbmap -option 'caps:ctrl_modifier'
-	xcape -e '#66=Escape'
-else
-	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+# Call local sript to set screen layout
+if [ -f ~/.screenlayout/layout.sh ]; then
+	sh ~/.screenlayout/layout.sh
 fi
 
-#Use mwb-layout
+# Compile and set mwb-layout
 setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY 2>/dev/null
 
-#Start compton and fork to background
-compton --config ~/.config/compton.conf -b
+# Map Caps to Ctrl
+setxkbmap -option 'caps:ctrl_modifier'
 
-#Hide cursor after 5 sec
+# Use Caps as ESC and Ctrl modifier
+xcape -e '#66=Escape' &
+
+# Hide cursor after 5 sec
 unclutter -idle 5 -root -noevents &
 
-exec bspwm
+# Start window manager
+exec i3
