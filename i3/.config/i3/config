@@ -4,7 +4,7 @@ set $mod Mod4
 set $up period
 set $down e
 set $right u
-set $left o  
+set $left o
 
 set $1 m
 set $2 w
@@ -18,23 +18,28 @@ set $9 r
 
 # autostart
 exec_always feh --bg-fill $WALLPAPER
+exec compton -b
+exec setxkbmap -option 'caps:ctrl_modifier' mwb
+exec xcape -e '#66=Escape'
+exec unclutter -idle 5 -root -noevents
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
-bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn unifont
-bindsym $mod+Return		exec	/home/patrick/git/st/st
-bindsym $mod+Shift+Return	exec	/home/patrick/git/st/st -e tmux
+bindsym $mod+d			exec 	rofi -show run
+bindsym $mod+shift+d		exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn unifont
+bindsym $mod+space		exec	~/git/st/st -e fish
+bindsym $mod+Shift+space	exec	~/git/st/st
 bindsym Print			exec 	scrot
 bindsym Shift+Print		exec 	scrot -u
 bindsym $mod+dollar 		exec 	xcalib -invert -alter
 
 # gaps
-gaps inner 12
-gaps outer 12
+gaps inner 30
+gaps outer 0
 
 # style
-smart_borders on
-font pango:Unifont
+#smart_borders on
+font pango:ubuntu mono
 for_window [class="^.*"] border pixel 0
 for_window [class="^st-256color"] border pixel 1
 for_window [class=(?i)pavucontrol] floating enable
@@ -67,8 +72,8 @@ bindsym $mod+p 		split h
 
 # floating
 floating_modifier $mod
-bindsym $mod+Shift+space	floating toggle
-bindsym $mod+space		focus mode_toggle
+bindsym $mod+Shift+Return	floating toggle
+bindsym $mod+Return		focus mode_toggle
 
 # scratchpad
 bindsym $mod+Shift+s 	move scratchpad
@@ -159,7 +164,7 @@ bar {
 	mode hide
 	position top
 	colors {
-		set $bg #33333300
+		set $bg #33333399
 		set $fg #ffffff
 		background $bg
 		statusline $fg
