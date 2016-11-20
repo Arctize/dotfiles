@@ -4,9 +4,6 @@
 [submodule ".vim/bundle/vim-latex-live-preview"]
 	path = vim/.vim/bundle/vim-latex-live-preview
 	url = https://github.com/xuhdev/vim-latex-live-preview.git
-[submodule ".vim/bundle/supertab"]
-	path = vim/.vim/bundle/supertab
-	url = https://github.com/ervandew/supertab.git
 [submodule ".vim/bundle/nerdtree"]
 	path = vim/.vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
