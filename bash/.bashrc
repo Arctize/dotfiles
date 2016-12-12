@@ -26,14 +26,16 @@ shopt -s checkwinsize
 # automatically change directory
 shopt -s autocd
 
+bind 'set echo-control-characters off'
+
 # enable vi mode
-set -o vi
-bind -m vi-insert "\c-l":clear-screen
-bind 'set show-mode-in-prompt on'
+#set -o vi
+#bind -m vi-insert "\c-l":clear-screen
+#bind 'set show-mode-in-prompt on'
 
 # Change cursor depending on mode
-bind 'set vi-cmd-mode-string "\x1b[\x30 q"'
-bind 'set vi-ins-mode-string "\x1b[\x35 q"'
+#bind 'set vi-cmd-mode-string "\[\x1b[\x30 q\]"'
+#bind 'set vi-ins-mode-string "\[\x1b[\x35 q\]"'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -47,30 +49,35 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Colored prompt
-#PS1="\[\033[31m\]\u\033[0m\]@\033[32m\]\h \033[1;34m\]\w\[\033[0m \]$ "
-function exitstatus {
+# Color prompt
+bold="\[\033[1m\]"
+red="\[\033[1;31m\]"
+green="\[\e[32;1m\]"
+blue="\[\e[34;1m\]"
+grey="\[\e[37;1m\]"
+off="\[\033[m\]"
 
-	EXITSTATUS="$?"
-	BOLD="\[\033[1m\]"
-	RED="\[\033[1;31m\]"
-	GREEN="\[\e[32;1m\]"
-	BLUE="\[\e[34;1m\]"
-	OFF="\[\033[m\]"
+function setprompt {
 
-	if [ "${EXITSTATUS}" -eq 0 ]
-	then
-		status="${BOLD}${GREEN}\$${OFF}"
+ 	gitbranch=$(git branch 2>/dev/null | grep ^*)
+	
+ 	if [ "$gitbranch" ]; then
+		gitstatus=" $grey($gitbranch)"
+ 	else
+ 		gitstatus=""
+ 	fi
+
+	if [ $? -eq 0 ];then
+		statuscolor="$green"
 	else
-		status="${BOLD}${RED}\$${OFF}"
+		statuscolor="$red"
 	fi
 
-	PS1="\h ${BLUE}\W${OFF} ${status} "
-
-	PS2="${BOLD}>${OFF} "
+	PS1="$bold\h $blue\W$gitstatus $statuscolor\$ $off"
+	PS2="$bold>$off "
 }
 
-PROMPT_COMMAND=exitstatus
+PROMPT_COMMAND=setprompt
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -113,3 +120,6 @@ up () {
 	bind -x '"\C-l": clear'
 	clear
 }
+
+# Add fuck alias
+alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
