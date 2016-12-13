@@ -1,7 +1,7 @@
 [[ $- != *i* ]] && return
 
-HISTFILE=~/.histfile
-HISTSIZE=1000
+HISTFILE=~/.bash_history
+HISTSIZE=5000
 SAVEHIST=1000
 
 autoload -U colors && colors
@@ -10,9 +10,11 @@ compinit
 
 setopt autocd extendedglob nomatch notify nocorrectall
 
-PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg_bold[blue]%}%~ %{$reset_color%}%# "
+PS1="%{$fg[green]%}%m %{$fg_bold[blue]%}%~ %{$reset_color%}%# "
+
 export EDITOR=vim
 export PATH=$PATH:~/bin
+export WALLPAPER="$HOME/.wallpaper"
 
 alias ls='ls --color=auto'
 alias la='ls -A'
