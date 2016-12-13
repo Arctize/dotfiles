@@ -59,6 +59,12 @@ off="\[\033[m\]"
 
 function setprompt {
 
+	if [ $? -eq 0 ];then
+		statuscolor="$green"
+	else
+		statuscolor="$red"
+	fi
+
  	gitbranch=$(git branch 2>/dev/null | grep ^*)
 	
  	if [ "$gitbranch" ]; then
@@ -66,12 +72,6 @@ function setprompt {
  	else
  		gitstatus=""
  	fi
-
-	if [ $? -eq 0 ];then
-		statuscolor="$green"
-	else
-		statuscolor="$red"
-	fi
 
 	PS1="$bold\h $blue\W$gitstatus $statuscolor\$ $off"
 	PS2="$bold>$off "
