@@ -25,16 +25,16 @@ exec unclutter -idle 5 -root -noevents
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
-bindsym $mod+d			exec 	rofi -show run
-bindsym $mod+shift+d		exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -fn unifont
-bindsym $mod+space		exec	~/git/st/st -e fish
-bindsym $mod+Shift+space	exec	~/git/st/st
+bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
+bindsym $mod+shift+d		exec 	rofi -show run
+bindsym $mod+space		exec	~/git/st/st
+bindsym $mod+Shift+space	exec	~/git/st/st -f "unifont:pixelsize=16"
 bindsym Print			exec 	scrot
 bindsym Shift+Print		exec 	scrot -u
 bindsym $mod+dollar 		exec 	xcalib -invert -alter
 
 # gaps
-gaps inner 30
+gaps inner 75
 gaps outer 0
 
 # style
@@ -130,7 +130,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
         bindsym e exec i3 exit
 	bindsym r exec systemctl reboot
         bindsym s exec systemctl poweroff
-        bindsym l exec slock; mode "default"
+        bindsym l exec lock; mode "default"
         bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
@@ -151,16 +151,15 @@ mode "Resize/Gaps mode" {
 }
 
 #colors             	border  backgr. text    indicator
-client.focused      	#ff0000 #ffffff #ffffff #ffffff
-client.focused_inactive	#333333 #333333 #ffffff #333333
-client.unfocused     	#333333 #222222 #888888 #ff0000
+client.focused      	#ff0000 #333333 #ffffff #ffffff
+client.focused_inactive	#333333 #e4e4e4 #ffffff #333333
+client.unfocused     	#333333 #e4e4e4 #888888 #ff0000
 client.urgent        	#2f343a #900000 #ffffff #ffffff
 
 # i3bar
 bar {
 	i3bar_command  i3bar -t
 	status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	height 20
 	mode hide
 	position top
 	colors {
