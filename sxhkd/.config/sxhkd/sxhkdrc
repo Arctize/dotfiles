@@ -18,6 +18,9 @@ super + shift + d
 super + l
 	slock
 
+super + shift + l
+	lock
+
 # Volume control
 XF86Audio{Raise,Lower}Volume
 	amixer -q set Master {4%+,4%-} unmute
