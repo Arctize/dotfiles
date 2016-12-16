@@ -1,5 +1,5 @@
 ! General
-rofi.font:                unifont 12
+rofi.font:                ubuntu mono 24
 rofi.opacity:             80
 rofi.fake-transparency:   false
 rofi.hide-scrollbar:      true
