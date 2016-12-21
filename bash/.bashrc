@@ -4,8 +4,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+	*i*) ;;
+	*) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -26,30 +26,31 @@ shopt -s checkwinsize
 # automatically change directory
 shopt -s autocd
 
+# Don't show ctrl char spam
 bind 'set echo-control-characters off'
 
 # enable vi mode
-#set -o vi
-#bind -m vi-insert "\c-l":clear-screen
-#bind 'set show-mode-in-prompt on'
+set -o vi
+bind -m vi-insert "\c-l":clear-screen
+bind 'set show-mode-in-prompt on'
 
-# Change cursor depending on mode
-#bind 'set vi-cmd-mode-string "\[\x1b[\x30 q\]"'
-#bind 'set vi-ins-mode-string "\[\x1b[\x35 q\]"'
+# Change cursor and mode-string depending on mode.
+bind 'set vi-cmd-mode-string "\1\x1b[\x30 q\e[31;1m\2>\1\033[m\2"'
+bind 'set vi-ins-mode-string "\1\x1b[\x35 q\e[32;1m\2▸\1\033[m\2"'
 
-# enable color support of ls and also add handy aliases
+# Enable color support of ls/grep
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+	alias dir='dir --color=auto'
+	alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 
-# Color prompt
+# Colors used in the prompt
 bold="\[\033[1m\]"
 red="\[\033[1;31m\]"
 green="\[\e[32;1m\]"
@@ -59,24 +60,26 @@ off="\[\033[m\]"
 
 function setprompt {
 
+	# Check exit status of last command and change the color accordingly
 	if [ $? -eq 0 ];then
 		statuscolor="$green"
 	else
 		statuscolor="$red"
 	fi
 
- 	gitbranch=$(git branch 2>/dev/null | grep ^*)
-	
- 	if [ "$gitbranch" ]; then
+	# Check if we're inside a git directory and, if so, display the branch name
+	gitbranch=$(sed -e 's/.*\///' .git/HEAD 2>/dev/null)
+	if [ "$gitbranch" ]; then
 		gitstatus=" $grey($gitbranch)"
- 	else
- 		gitstatus=""
- 	fi
+	else
+		gitstatus=""
+	fi
 
-	PS1="$bold\h $blue\W$gitstatus $statuscolor\$ $off"
+	PS1="$bold\h $blue\w$gitstatus $statuscolor\$ $off"
 	PS2="$bold>$off "
 }
 
+PROMPT_DIRTRIM=2
 PROMPT_COMMAND=setprompt
 
 # colored GCC warnings and errors
