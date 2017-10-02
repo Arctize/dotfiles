@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=50000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -109,9 +109,11 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-# Enable scripts for base16 color schemes
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+# Enable scripts for base16 color schemes when running st
+if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
+	BASE16_SHELL=$HOME/.config/base16-shell/
+	[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+fi
 
 # Move prompt to bottom resp. top of the terminal
 down () {
