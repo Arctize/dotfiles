@@ -86,13 +86,16 @@ PROMPT_COMMAND=setprompt
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # set EDITOR variable
-if hash vim 2>/dev/null; then
+if hash nvim 2>/dev/null; then
+	export EDITOR=nvim
+elif hash vim 2>/dev/null; then
 	export EDITOR=vim
 else
 	export EDITOR=vi
 fi
 
 # Alias definitions.
+alias v="$EDITOR"
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
