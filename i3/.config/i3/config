@@ -17,34 +17,44 @@ set $8 c
 set $9 r
 
 # autostart
-exec_always feh --bg-fill $WALLPAPER
-exec compton -b
+exec_always feh --bg-tile $WALLPAPER
+exec xset r rate 200 50
 exec setxkbmap -option 'caps:ctrl_modifier' mwb
+exec compton -b
 exec xcape -e '#66=Escape'
 exec unclutter -idle 5 -root -noevents
 
 # shortcuts
 bindsym $mod+grave		exec 	xdotool click --repeat 50 --delay 20 1
 bindsym $mod+d			exec 	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
+bindsym $mod+shift+p		exec 	j4-dmenu-desktop
+bindsym $mod+p			exec 	passmenu -nb '#fff' -nf '#333' -sb '#8af' -b -fn "liberation mono 12"
 bindsym $mod+shift+d		exec 	rofi -show run
 bindsym $mod+space		exec	~/git/st/st
-bindsym $mod+Shift+space	exec	~/git/st/st -f "unifont:pixelsize=16"
+bindsym $mod+Shift+space	exec	dbus-launch gnome-terminal
 bindsym Print			exec 	scrot
 bindsym Shift+Print		exec 	scrot -u
 bindsym $mod+dollar 		exec 	xcalib -invert -alter
 
-# gaps
-gaps inner 75
-gaps outer 0
+# rs bindings
+bindsym $mod+ampersand 		exec 	xdotool mousemove_relative 42 0
+bindsym $mod+bracketleft 	exec 	xdotool mousemove_relative 0 36
+bindsym $mod+braceleft  	exec 	xdotool mousemove_relative -- -42 0
 
 # style
-#smart_borders on
 font pango:ubuntu mono
 for_window [class="^.*"] border pixel 0
 for_window [class="^st-256color"] border pixel 1
+for_window [class="^Gnome-terminal"] border pixel 1
+for_window [title="Authy"] floating enable
 for_window [class=(?i)pavucontrol] floating enable
 for_window [class=(?i)telegram*] floating enable
+for_window [class=(?i)pinentry] floating enable
 for_window [window_role=pop-up] floating enable
+
+# gaps
+gaps inner 57
+gaps outer 0
 
 # close/kill
 bindsym $mod+q		kill
@@ -67,8 +77,8 @@ bindsym $mod+Shift+$up		move up		30px
 bindsym $mod+Shift+$right	move right	100px
 
 # change split orientation
-bindsym $mod+comma	split v
-bindsym $mod+p 		split h
+bindsym $mod+a	split v
+bindsym $mod+i 	split h
 
 # floating
 floating_modifier $mod
@@ -80,8 +90,8 @@ bindsym $mod+Shift+s 	move scratchpad
 bindsym $mod+s 		scratchpad show
 
 # marks
-bindsym $mod+a  	exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go to: '
-bindsym $mod+shift+a	exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+bindsym $mod+semicolon  	exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go to: '
+bindsym $mod+shift+semicolon	exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
 
 # switch workspace
 bindsym Mod1+Ctrl+$right	workspace next
@@ -108,10 +118,12 @@ bindsym $mod+Shift+$8		move container to workspace 8
 bindsym $mod+Shift+$9		move container to workspace 9
 
 # volume control
-bindsym XF86AudioLowerVolume		exec amixer -q set Master 4%- 	unmute 	&& pkill -RTMIN+1 i3blocks
-bindsym Shift+XF86AudioLowerVolume	exec amixer -q set Master 0% 	unmute 	&& pkill -RTMIN+1 i3blocks
 bindsym XF86AudioRaiseVolume		exec amixer -q set Master 4%+ 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Up				exec amixer -q set Master 4%+ 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume		exec amixer -q set Master 4%- 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Down			exec amixer -q set Master 4%- 	unmute 	&& pkill -RTMIN+1 i3blocks
 bindsym Shift+XF86AudioRaiseVolume	exec amixer -q set Master 100% 	unmute 	&& pkill -RTMIN+1 i3blocks
+bindsym Shift+XF86AudioLowerVolume	exec amixer -q set Master 0% 	unmute 	&& pkill -RTMIN+1 i3blocks
 bindsym XF86AudioMute			exec amixer -q set Master toggle 	&& pkill -RTMIN+1 i3blocks
 
 # brightness controls
@@ -131,6 +143,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
 	bindsym r exec systemctl reboot
         bindsym s exec systemctl poweroff
         bindsym l exec lock; mode "default"
+        bindsym shift+l exec i3lock -i ~/Pictures/lockscreen.png; mode "default"
         bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
@@ -150,11 +163,11 @@ mode "Resize/Gaps mode" {
 	bindsym Escape mode "default"
 }
 
-#colors             	border  backgr. text    indicator
-client.focused      	#ff0000 #333333 #ffffff #ffffff
-client.focused_inactive	#333333 #e4e4e4 #ffffff #333333
-client.unfocused     	#333333 #e4e4e4 #888888 #ff0000
-client.urgent        	#2f343a #900000 #ffffff #ffffff
+#colors             	backgr. border. text    indicator
+client.focused      	#00ff00 #cccccc #ffffff #999999
+client.focused_inactive	#0000ff #333333 #ffffff #999999
+client.unfocused     	#333333 #333333 #888888 #999999
+client.urgent        	#2f343a #900000 #ffffff #999999
 
 # i3bar
 bar {
