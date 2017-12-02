@@ -1,25 +1,32 @@
 #! /bin/sh
 
 pkill sxhkd; sxhkd &
-feh --bg-fill $WALLPAPER
-pkill compton; compton -b
+feh --bg-tile $WALLPAPER
+#pkill compton; compton -b
 
 # Style settings (have to be applied before assigning desktops)
 bspc config border_width		2
 bspc config window_gap			36
 
-# Host specific monitor configuration
-if [[ $(hostname) == desk* ]]; then
-	bspc monitor -f HDMI1
-	bspc monitor -d 1 3 5 7 9
-	bspc monitor -f VGA1
-	bspc monitor -d 2 4 6 8
-	bspc desktop -f 1
-
+# Portable monitor config
+readarray -t monitors <<< $(xrandr |grep " connected [[:digit:]]" | awk '{print $1}')
+num_monitors=${#monitors[@]}
+if [[ $num_monitors < "$(bspc query -M | wc -l)" ]]; then
+	echo case
+	for i in {1..9}
+	do
+		bspc desktop "$i" -m ${monitors[0]}
+	done
+fi
+bspc monitor -o 1 2 3 4 5 6 7 8 9
+if [[ $num_monitors > 2 ]]; then
+	bspc monitor ${monitors[0]} -d 1 4 7
+	bspc monitor ${monitors[1]} -d 2 5 8
+	bspc monitor ${monitors[2]} -d 3 6 9
+elif [[ $num_monitors -eq 2 ]]; then
+	bspc monitor ${monitors[0]} -d 1 3 5 7 9
+	bspc monitor ${monitors[1]} -d 2 4 6 8
 else
-	if [[ $(hostname) == nyla ]]; then
-		bspc config window_gap		75
-	fi
 	bspc monitor -d 1 2 3 4 5 6 7 8 9
 fi
 
@@ -32,11 +39,11 @@ bspc config split_ratio          	0.50
 
 bspc config focus_follows_pointer 	true
 bspc config pointer_follows_focus 	false
-bspc config focus_by_distance    	true
-bspc config history_aware_focus  	true
+#bspc config focus_by_distance    	true
+#bspc config history_aware_focus  	true
 
 bspc config active_border_color \#000000
-bspc config normal_border_color \#e0e0e0
+bspc config normal_border_color \#eeeeee
 
 bspc rule -a "*" border=off
 bspc rule -a st-256color border=on
