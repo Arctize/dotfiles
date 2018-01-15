@@ -1,6 +1,10 @@
 "" Vim-plug
 call plug#begin('~/.local/share/nvim/plugged')
 
+"Plug 'https://github.com/joshdick/onedark.vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'https://github.com/mbbill/undotree'
+Plug 'https://github.com/rafi/awesome-vim-colorschemes'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -15,6 +19,7 @@ call plug#end()
 "" Deoplete
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+nnoremap <F5> :UndotreeToggle<cr>
 
 
 " UltiSnips
@@ -36,6 +41,8 @@ call neomake#configure#automake('w')
 
 au BufRead,BufNewFile *.tex setlocal textwidth=80
 
+colorscheme rdark-terminal2
+
 set foldmethod=marker
 set guicursor=n-v-c-sm:block,i-ci-ve:ver1,r-cr-o:hor1
 
@@ -47,7 +54,7 @@ set scrolloff=3
 set mouse=a
 
 set number
-set relativenumber
+"set relativenumber
 
 set noswapfile
 
@@ -58,5 +65,19 @@ if has('persistent_undo')
 	set undoreload=10000        " number of lines to save for undo
 endif
 
-"" vim:fdm=expr:fdl=0
-"" vim:fde=getline(v\:lnum)=~'^""'?'>'.(matchend(getline(v\:lnum),'""*')-2)\:'='
+" Strip the newline from the end of a string
+function! Chomp(str)
+  return substitute(a:str, '\n$', '', '')
+endfunction
+
+" Find a file and pass it to cmd
+function! DmenuOpen(cmd)
+  let fname = Chomp(system("git ls-files | dmenu -i -l 20 -p " . a:cmd))
+  if empty(fname)
+    return
+  endif
+  execute a:cmd . " " . fname
+endfunction
+
+map <c-t> :call DmenuOpen("tabe")<cr>
+map <c-f> :call DmenuOpen("e")<cr>
