@@ -9,7 +9,7 @@
     "follow_symlinks": false,
     "frequently_used": 0,
     "global_ignore_folders": [],
-    "ignore_folders": [],
+    "ignore_folders": ["~/.steam","~/.local/share/Steam","~/win"],
     "include_applications": true,
     "include_binaries": true,
     "include_hidden_files": true,
@@ -36,7 +36,7 @@
         "-sb",
         "#1D1F21",
         "-fn",
-        "ubuntu mono:size=12",
+        "ubuntu:size=12",
         "-l",
         "10"
     ],
@@ -47,7 +47,7 @@
     ],
     "path_aliasFile": "",
     "path_shellCommand": "~/.dmenuEextended_shellCommand.sh",
-    "prompt": "o/",
+    "prompt": "▸ ",
     "scan_hidden_folders": false,
     "terminal": "urxvt",
     "valid_extensions": [
