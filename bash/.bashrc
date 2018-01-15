@@ -94,8 +94,12 @@ else
 	export EDITOR=vi
 fi
 
+# mimeopen uses the TERMINAL variable
+export TERMINAL='st -f "ubuntu mono:size=12" -e'
+
 # Alias definitions.
-alias v="$EDITOR"
+alias v='$EDITOR'
+alias o='rifle $(fzf)'
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
@@ -114,8 +118,12 @@ fi
 
 # Enable scripts for base16 color schemes when running st
 if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
-	BASE16_SHELL=$HOME/.config/base16-shell/
-	[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+	if [ -e ~/.cache/wal/sequences ]; then
+		(cat ~/.cache/wal/sequences &)
+	else
+		BASE16_SHELL=$HOME/.config/base16-shell/
+		[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+	fi
 fi
 
 # Move prompt to bottom resp. top of the terminal
@@ -131,3 +139,12 @@ up () {
 
 # Add fuck alias
 alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
+
+fzf-dmenu() {
+# note: xdg-open has a bug with .desktop files, so we cant use that shit
+selected="$(ls /usr/share/applications | fzf -e)"
+nohup `grep '^Exec' "/usr/share/applications/$selected" | tail -1 | sed 's/^Exec=//' | sed 's/%.//'` >/dev/null 2>&1&
+}
+
+# hotkey to run the function (Ctrl+O)
+bind '"\C-O":"fzf-dmenu\n"'
