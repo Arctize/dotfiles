@@ -16,42 +16,52 @@ set $7 g
 set $8 c
 set $9 r
 
+
+set_from_resource $fg i3wm.color7 #ffffff
+set_from_resource $bg i3wm.color0 #33333399
+set_from_resource $alt i3wm.color7 #b58900
+
 # autostart
-exec_always feh --bg-tile $WALLPAPER
 exec_always ~/git/dmenu-extended/dmenu_extended_cache_build
+exec feh --bg-tile $WALLPAPER
 exec xset r rate 200 50
 exec setxkbmap -option 'caps:ctrl_modifier' mwb
 exec compton -b
 exec xcape -e '#66=Escape'
-exec unclutter -idle 5 -root -noevents
-exec urxvtd
+exec unclutter -idle 10 -root -noevents
 
 # shortcuts
-bindsym $mod+grave		exec	xdotool click --repeat 50 --delay 20 1
 bindsym $mod+d			exec	~/git/dmenu-extended/dmenu_extended_run
 bindsym $mod+shift+d		exec	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
-bindsym $mod+shift+p		exec	j4-dmenu-desktop
 bindsym $mod+p			exec	passmenu -nb '#fff' -nf '#333' -sb '#8af' -b -fn "liberation mono 12"
-bindsym $mod+space		exec	~/git/st/st
-bindsym $mod+Shift+space	exec	urxvtc
+bindsym $mod+Shift+space	exec	urxvt
 bindsym Print			exec	scrot
 bindsym Shift+Print		exec	scrot -u
-bindsym $mod+dollar		exec	xcalib -invert -alter
+bindsym Ctl+Print		exec	xfce4-screenshooter -r
 
-# rs bindings
+# program bindings
+bindsym $mod+space		exec	~/git/st/st
+bindsym $mod+b			exec	telegram.sh
+bindsym $mod+x			exec	pavucontrol
+
+# X bindings
+bindsym $mod+dollar		exec	xcalib -invert -alter
+bindsym $mod+shift+dollar	exec	xdotool click --repeat 50 --delay 3 1
 bindsym $mod+ampersand		exec	xdotool mousemove_relative 42 0
 bindsym $mod+bracketleft	exec	xdotool mousemove_relative 0 36
 bindsym $mod+braceleft		exec	xdotool mousemove_relative -- -42 0
 
 # style
 font pango:ubuntu mono
-for_window [class="^.*"] border pixel 0
+for_window [title="^.*"] border pixel 0
 for_window [class="^st-256color"] border pixel 1
-for_window [title=".*rxvt*"] border pixel 1
+for_window [class=(?i)urxvt] border pixel 1
+for_window [class="Gnome-terminal"] border pixel 1
 for_window [title="Authy"] floating enable
 for_window [class=(?i)pavucontrol] floating enable
 for_window [class=(?i)telegram*] floating enable
 for_window [class=(?i)pinentry] floating enable
+for_window [class=(?i)steam] floating enable
 for_window [window_role=pop-up] floating enable
 
 # gaps
@@ -142,10 +152,12 @@ bindsym $mod+Shift+slash	restart
 bindsym $mod+Escape mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock"
 mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
 	bindsym e exec i3 exit
+		bindsym d exec day.sh
+		bindsym n exec night.sh
 		bindsym r exec systemctl reboot
 		bindsym s exec systemctl poweroff
 		bindsym l exec lock.sh; mode "default"
-		bindsym shift+l exec i3lock -i ~/Pictures/lockscreen.png; mode "default"
+		bindsym shift+l exec i3lock -p win -ui ~/Pictures/lockscreen.png; mode "default"
 		bindsym Return mode "default"
 		bindsym Escape mode "default"
 }
@@ -165,11 +177,12 @@ mode "Resize/Gaps mode" {
 		bindsym Escape mode "default"
 }
 
+
 #colors			backgr. border. text    indicator
-client.focused		#00ff00 #cccccc #ffffff #999999
-client.focused_inactive	#0000ff #333333 #ffffff #999999
-client.unfocused	#333333 #333333 #888888 #999999
-client.urgent		#2f343a #900000 #ffffff #999999
+client.focused		#00ff00 $fg $fg $bg
+client.focused_inactive	#0000ff $bg $bg55 $bg55
+client.unfocused	#333333 $bg $bg55 $bg55
+client.urgent		#2f343a $alt $bg55 $bg55
 
 # i3bar
 bar {
@@ -178,14 +191,12 @@ bar {
 		mode hide
 		position top
 		colors {
-			set $bg #33333399
-				set $fg #ffffff
-				background $bg
+				background $bgcc
 				statusline $fg
-				separator  #b58900
-				focused_workspace  $bg $bg $fg
-				active_workspace   $bg $bg $fg
-				inactive_workspace $bg $bg #b58900
-				urgent_workspace   #b58900 $bg #ffffff
+				separator $alt
+				focused_workspace  $bgcc $bgcc $fg
+				active_workspace   $bgcc $bgcc $fg
+				inactive_workspace $bgcc $bgcc $alt
+				urgent_workspace   $alt $bgcc $fg
 		}
 }
