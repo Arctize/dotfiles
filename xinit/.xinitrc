@@ -20,5 +20,18 @@ xcape -e '#66=Escape' &
 # Hide cursor after 5 sec
 unclutter -idle 5 -root -noevents &
 
-# Start window manager
-exec i3
+TWM=true
+
+if [ $TWM = true ]; then
+	# Active colorscheme using pywal
+	wal -R
+
+	# Set dpi setting when running on Dell XPS
+	if [ $HOSTNAME = FALSExps ]; then
+		xrdb -merge $HOME/.Xft.hipdi
+	fi
+
+	exec i3
+else
+	exec startkde
+fi
