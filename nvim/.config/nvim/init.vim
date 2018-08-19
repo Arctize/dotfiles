@@ -2,6 +2,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 "Plug 'https://github.com/joshdick/onedark.vim'
+Plug 'dylanaraps/wal.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'https://github.com/mbbill/undotree'
 Plug 'https://github.com/rafi/awesome-vim-colorschemes'
@@ -20,6 +21,9 @@ call plug#end()
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 nnoremap <F5> :UndotreeToggle<cr>
+nnoremap <c-s> :w <cr>
+nnoremap <c-t> :Autoformat <cr>
+inoremap <c-t> :Autoformat <cr>
 
 
 " UltiSnips
@@ -39,9 +43,15 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" 
 " Neomake
 call neomake#configure#automake('w')
 
-au BufRead,BufNewFile *.tex setlocal textwidth=80
+"au BufRead,BufNewFile *.tex setlocal textwidth=100
 
-colorscheme rdark-terminal2
+function UpdateDayNightTheme()
+	if !empty(glob("~/.config/theme/day"))
+		colorscheme lightning
+	else
+		colorscheme onedark
+	endif
+endfunction
 
 set foldmethod=marker
 set guicursor=n-v-c-sm:block,i-ci-ve:ver1,r-cr-o:hor1
@@ -67,17 +77,19 @@ endif
 
 " Strip the newline from the end of a string
 function! Chomp(str)
-  return substitute(a:str, '\n$', '', '')
+	return substitute(a:str, '\n$', '', '')
 endfunction
+
+let g:vimtex_view_general_viewer = 'zathura'
 
 " Find a file and pass it to cmd
-function! DmenuOpen(cmd)
-  let fname = Chomp(system("git ls-files | dmenu -i -l 20 -p " . a:cmd))
-  if empty(fname)
-    return
-  endif
-  execute a:cmd . " " . fname
-endfunction
+" function! DmenuOpen(cmd)
+"   let fname = Chomp(system("git ls-files | dmenu -i -l 20 -p " . a:cmd))
+"  if empty(fname)
+"    return
+"  endif
+"  execute a:cmd . " " . fname
+"endfunction
 
-map <c-t> :call DmenuOpen("tabe")<cr>
-map <c-f> :call DmenuOpen("e")<cr>
+"map <c-t> :call DmenuOpen("tabe")<cr>
+"map <c-f> :call DmenuOpen("e")<cr>
