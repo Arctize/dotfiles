@@ -98,6 +98,7 @@ fi
 export TERMINAL='st -f "ubuntu mono:size=12" -e'
 
 # Alias definitions.
+alias r='ranger'
 alias v='$EDITOR'
 alias o='rifle $(fzf)'
 alias ll='ls -lh'
@@ -117,7 +118,7 @@ if ! shopt -oq posix; then
 fi
 
 # Enable scripts for base16 color schemes when running st
-if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
+if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ] || [ "$TERM" == "rxvt-unicode-256color" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
 		(cat ~/.cache/wal/sequences &)
 	else
