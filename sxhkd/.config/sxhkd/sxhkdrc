@@ -7,12 +7,12 @@ super + space
 	~/git/st/st
 
 # Run rofi
-super + d
+super + shift + d
 	rofi -show run
 
 # Run dmenu
-super + shift + d
-	dmenu_run
+super + d
+	dmenu_extended_run
 
 # Lock screen
 super + l
