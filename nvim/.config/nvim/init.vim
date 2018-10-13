@@ -2,6 +2,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 "Plug 'https://github.com/joshdick/onedark.vim'
+Plug 'vim-airline/vim-airline'
 Plug 'dylanaraps/wal.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'https://github.com/mbbill/undotree'
@@ -70,7 +71,7 @@ set noswapfile
 
 if has('persistent_undo')
 	set undofile                " Save undo's after file closes
-	set undodir=$HOME/.vim/undo " where to save undo histories
+	set undodir=$HOME/.cache/undo " where to save undo histories
 	set undolevels=1000         " How many undos
 	set undoreload=10000        " number of lines to save for undo
 endif
@@ -91,5 +92,8 @@ let g:vimtex_view_general_viewer = 'zathura'
 "  execute a:cmd . " " . fname
 "endfunction
 
+call UpdateDayNightTheme()
+
 "map <c-t> :call DmenuOpen("tabe")<cr>
 "map <c-f> :call DmenuOpen("e")<cr>
+let g:airline_powerline_fonts = 1
