@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -8,28 +6,28 @@ case $- in
 	*) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
+# Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
-# append to the history file, don't overwrite it
+# Append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=50000
-HISTFILESIZE=10000
+# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=150000
+HISTFILESIZE=""
 
-# check the window size after each command and, if necessary,
+# Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# automatically change directory
+# Automatically change directory
 shopt -s autocd
 
 # Don't show ctrl char spam
 bind 'set echo-control-characters off'
 
-# enable vi mode
+# Enable vi mode
 set -o vi
 bind -m vi-insert "\c-l":clear-screen
 bind 'set show-mode-in-prompt on'
@@ -82,10 +80,10 @@ function setprompt {
 PROMPT_DIRTRIM=2
 PROMPT_COMMAND=setprompt
 
-# colored GCC warnings and errors
+# Colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# set EDITOR variable
+# Set EDITOR variable
 if hash nvim 2>/dev/null; then
 	export EDITOR=nvim
 elif hash vim 2>/dev/null; then
@@ -106,7 +104,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias peerflix='peerflix --mpv'
 
-# enable programmable completion features (you don't need to enable
+# Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
@@ -118,7 +116,7 @@ if ! shopt -oq posix; then
 fi
 
 # Enable scripts for base16 color schemes when running st
-if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ] || [ "$TERM" == "rxvt-unicode-256color" ]; then
+if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
 		(cat ~/.cache/wal/sequences &)
 	else
@@ -140,12 +138,3 @@ up () {
 
 # Add fuck alias
 alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
-
-fzf-dmenu() {
-# note: xdg-open has a bug with .desktop files, so we cant use that shit
-selected="$(ls /usr/share/applications | fzf -e)"
-nohup `grep '^Exec' "/usr/share/applications/$selected" | tail -1 | sed 's/^Exec=//' | sed 's/%.//'` >/dev/null 2>&1&
-}
-
-# hotkey to run the function (Ctrl+O)
-bind '"\C-O":"fzf-dmenu\n"'

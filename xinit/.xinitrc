@@ -27,7 +27,7 @@ if [ $TWM = true ]; then
 	wal -R
 
 	# Set dpi setting when running on Dell XPS
-	if [ $HOSTNAME = FALSExps ]; then
+	if [ $HOSTNAME = xps ]; then
 		xrdb -merge $HOME/.Xft.hipdi
 	fi
 
