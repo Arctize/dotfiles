@@ -7,7 +7,7 @@
     "fileopener": "mimeopen",
     "filter_binaries": false,
     "follow_symlinks": false,
-    "frequently_used": 0,
+    "frequently_used": 1,
     "global_ignore_folders": [],
     "ignore_folders": ["~/.steam","~/.local/share/Steam","~/win"],
     "include_applications": true,
@@ -52,6 +52,7 @@
     "terminal": "urxvt",
     "valid_extensions": [
         "",
+	"mp4",
         "sh",
         "py",
         "java",
