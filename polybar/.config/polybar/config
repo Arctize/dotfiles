@@ -1,0 +1,233 @@
+[colors]
+background = #2a292a
+foreground = #c2c0c3
+white = #c2c0c3
+brown = #9b8a79
+
+[bar/master]
+width = 100%
+height = 26
+separator = " "
+background = ${colors.background}
+foreground = ${colors.foreground}
+underline-size = 0
+overline-size = 0
+
+font-0 = Noto Sans:size=10;0
+font-1 = Wuncon Siji:size=9;1
+
+[bar/top]
+inherit = bar/master
+modules-left = wm allow title
+modules-center = memory
+modules-right = ovpn pavolume battery cpu backlight temperature time
+
+padding-right = 1
+
+[module/memory]
+type = internal/memory
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 3
+
+; Available tags:
+;   <label> (default)
+;   <bar-used>
+;   <bar-free>
+format = <bar-used>
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+label = RAM %gb_used%/%gb_free%
+
+; Only applies if <bar-used> is used
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+[module/keyboard]
+type = internal/xkeyboard
+
+; List of indicators to ignore
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+
+[module/temperature]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+
+; Threshold temperature to display warning label
+; Default: 80
+warn-temperature = 60
+
+[module/battery]
+type = internal/battery
+
+; This is useful in case the battery never reports 100% charge
+full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
+
+[module/allow]
+type = custom/text
+content = "|"
+content-foreground = ${colors.brown}
+
+; VPN
+[module/ovpn]
+type = internal/network
+interface = tun0
+interval = 3.0
+exec-if = pgrep openvpn
+
+format-connected-padding = 1
+format-disconnected-padding = 1
+
+format-connected = <label-connected>
+
+label-connected = 
+label-connected-foreground = ${colors.brown}
+
+label-disconnected = 
+label-disconnected-foreground = ${colors.white}
+
+;spotify
+[module/spotify]
+
+type = custom/script
+tail = true
+exec = ~/.config/polybar/spotify.sh %artist% - %title%
+
+format-foreground = ${colors.white}
+
+format-prefix = ""
+fotmat-prefix-font = 1
+format-prefix-foreground = ${colors.white}
+internal = 1
+
+format-padding = 1
+
+[module/pavolume]
+type = custom/script
+interval = 2
+exec = ~/.config/polybar/pavolume.sh
+
+click-right = exec pavucontrol
+click-left = ~/.config/polybar/pavolume.sh --togmute
+scroll-up = ~/.config/polybar/pavolume.sh --up
+scroll-down = ~/.config/polybar/pavolume.sh --down
+
+label = %output%
+label-foreground = ${colors.brown}
+format-padding = 1
+
+[module/network]
+type = internal/network
+interface = wlp3s0
+ping-interval = 3
+accumlate-stats = true
+
+[module/title]
+type = internal/xwindow
+
+format-prefix = "  "
+format-foreground = ${colors.brown}
+
+label-foreground = ${colors.brown}
+label = "%title:0:35:...% "
+label-maxlen = 75
+
+[module/wm]
+type = internal/i3
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; This will split the workspace name on ':'
+; Default: false
+strip-wsnumbers = false
+
+; Sort the workspaces by index instead of the default
+; sorting that groups the workspaces by output
+; Default: false
+index-sort = true
+
+; Create click handler used to focus workspace
+; Default: true
+enable-click = true
+
+; Create scroll handlers used to cycle workspaces
+; Default: true
+enable-scroll = true
+
+; Wrap around when reaching the first/last workspace
+; Default: true
+wrapping-scroll = false
+
+; Set the scroll cycle direction 
+; Default: true
+reverse-scroll = false
+
+; Use fuzzy (partial) matching on labels when assigning 
+; icons to workspaces
+; Example: code;♚ will apply the icon to all workspaces 
+; containing 'code' in the label
+; Default: false
+fuzzy-match = true
+
+[module/time]
+type = internal/date
+interval = 40
+
+format-padding = 1
+
+date = "%b %e, %Y - %I:%M %p"
