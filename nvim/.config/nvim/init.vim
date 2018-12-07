@@ -1,4 +1,4 @@
-"" Vim-plug
+" Vim-plug
 call plug#begin('~/.local/share/nvim/plugged')
 
 "Plug 'https://github.com/joshdick/onedark.vim'
@@ -18,7 +18,7 @@ Plug 'https://github.com/vim-scripts/JavaDecompiler.vim'
 call plug#end()
 
 
-"" Deoplete
+" Deoplete
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 nnoremap <F5> :UndotreeToggle<cr>
@@ -44,15 +44,6 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" 
 " Neomake
 call neomake#configure#automake('w')
 
-"au BufRead,BufNewFile *.tex setlocal textwidth=100
-
-function UpdateDayNightTheme()
-	if !empty(glob("~/.config/theme/day"))
-		colorscheme lightning
-	else
-		colorscheme onedark
-	endif
-endfunction
 
 set foldmethod=marker
 set guicursor=n-v-c-sm:block,i-ci-ve:ver1,r-cr-o:hor1
@@ -67,6 +58,7 @@ set mouse=a
 set number
 "set relativenumber
 
+set cindent
 set noswapfile
 
 if has('persistent_undo')
@@ -83,17 +75,14 @@ endfunction
 
 let g:vimtex_view_general_viewer = 'zathura'
 
-" Find a file and pass it to cmd
-" function! DmenuOpen(cmd)
-"   let fname = Chomp(system("git ls-files | dmenu -i -l 20 -p " . a:cmd))
-"  if empty(fname)
-"    return
-"  endif
-"  execute a:cmd . " " . fname
-"endfunction
+function UpdateDayNightTheme()
+	if !empty(glob("~/.config/theme/day"))
+		colorscheme lightning
+	else
+		colorscheme onedark
+	endif
+endfunction
 
 call UpdateDayNightTheme()
 
-"map <c-t> :call DmenuOpen("tabe")<cr>
-"map <c-f> :call DmenuOpen("e")<cr>
 let g:airline_powerline_fonts = 1
