@@ -4,13 +4,22 @@
 #
 # Generates colored output for i3blocks to show battery percentage
 # and an icon, plus a little charging indicator.
-# Requires nothing but Fontawesome.
+# Requires Fontawesome for icons and
+# uses acpi for time indication, but is not required.
+
 
 BAT_CAP_FILE='/sys/class/power_supply/*/capacity'
 BAT_STAT_FILE='/sys/class/power_supply/*/status'
 
+# Exit if no battery was found
+if [ ! -f $BAT_CAP_FILE ]; then
+	exit
+fi
+
+# Get battery percentage
 BAT_PERC=$(cat $BAT_CAP_FILE | head -n1 | sed 's/[0-9]*/&/')
 
+# Set icon and color accordingly
 if [ $BAT_PERC -lt 10 ]; then
 	COLOR='"#ff1e1e"'
 	ICON=
@@ -18,7 +27,7 @@ elif [ $BAT_PERC -lt 25 ]; then
 	COLOR='"#ff531e"'
 	ICON=
 elif [ $BAT_PERC -lt 50 ]; then
-	COLOR='"#ac7f1e"'
+	COLOR='"#9c7f1e"'
 	ICON=
 elif [ $BAT_PERC -lt 75 ]; then
 	COLOR='"#7cef1e"'
@@ -36,5 +45,11 @@ else
 	CHARGE_INDICATOR=""
 fi
 
-echo "<span foreground=$COLOR>$ICON<sup>$CHARGE_INDICATOR</sup> $BAT_PERC% </span>"
+ICON="<span foreground=$COLOR>$ICON</span>"
+CHARGE_INDICATOR='<span foreground="#f7e30e">'"<sup>$CHARGE_INDICATOR</sup></span>"
+
+TIME_LEFT=$(acpi -b | awk '{print $5}')
+
+
+echo "$ICON$CHARGE_INDICATOR $BAT_PERC% $TIME_LEFT"
 
