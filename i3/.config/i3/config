@@ -20,15 +20,17 @@ set $9 r
 set_from_resource $fg i3wm.color7 #ffffff
 set_from_resource $bg i3wm.color0 #33333399
 set_from_resource $alt i3wm.color7 #b58900
+set $al 00
 
 # autostart
 exec_always ~/git/dmenu-extended/dmenu_extended_cache_build
-exec feh --bg-tile $WALLPAPER
-exec xset r rate 200 50
-exec setxkbmap -option 'caps:ctrl_modifier' mwb
-exec compton -b
+#exec feh --bg-tile $WALLPAPER
+exec_always xset r rate 200 50
+exec_always setxkbmap -option 'caps:ctrl_modifier' mwb
+#exec compton -b
 exec xcape -e '#66=Escape'
 exec unclutter -idle 10 -root -noevents
+exec nitrogen --restore
 
 # shortcuts
 bindsym $mod+d			exec	~/git/dmenu-extended/dmenu_extended_run
@@ -64,8 +66,12 @@ for_window [class=(?i)pinentry] floating enable
 for_window [class=(?i)steam] floating enable
 for_window [window_role=pop-up] floating enable
 
+# additional rules for i3 inside plasma
+for_window [class=plasmashell title="Desktop"] kill
+for_window [class=plasmashell] floating enable
+
 # gaps
-gaps inner 57
+gaps inner 25
 gaps outer 0
 
 # close/kill
@@ -191,12 +197,12 @@ bar {
 		mode hide
 		position top
 		colors {
-				background $bgcc
+				background $bg$al
 				statusline $fg
 				separator $alt
-				focused_workspace  $bgcc $bgcc $fg
-				active_workspace   $bgcc $bgcc $fg
-				inactive_workspace $bgcc $bgcc $alt
-				urgent_workspace   $alt $bgcc $fg
+				focused_workspace  $bg$al $bg$al $fg
+				active_workspace   $bg$al $bg$al $fg
+				inactive_workspace $bg$al $bg$al $alt
+				urgent_workspace   $alt $bg$al $fg
 		}
 }
