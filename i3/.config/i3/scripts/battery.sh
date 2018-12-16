@@ -21,19 +21,19 @@ BAT_PERC=$(cat $BAT_CAP_FILE | head -n1 | sed 's/[0-9]*/&/')
 
 # Set icon and color accordingly
 if [ $BAT_PERC -lt 10 ]; then
-	COLOR='"#ff1e1e"'
+	COLOR='"#e03800"'
 	ICON=
 elif [ $BAT_PERC -lt 25 ]; then
-	COLOR='"#ff531e"'
+	COLOR='"#e0a400"'
 	ICON=
 elif [ $BAT_PERC -lt 50 ]; then
-	COLOR='"#9c7f1e"'
+	COLOR='"#d8e000"'
 	ICON=
 elif [ $BAT_PERC -lt 75 ]; then
-	COLOR='"#7cef1e"'
+	COLOR='"#c2e000"'
 	ICON=
 else
-	COLOR='"#1cff5c"'
+	COLOR='"#8ee000"'
 	ICON=
 fi
 
@@ -46,7 +46,8 @@ else
 fi
 
 ICON="<span foreground=$COLOR>$ICON</span>"
-CHARGE_INDICATOR='<span foreground="#f7e30e">'"<sup>$CHARGE_INDICATOR</sup></span>"
+CHARGE_INDICATOR="<sup>$CHARGE_INDICATOR</sup>"
+CHARGE_INDICATOR='<span foreground="#f7e30e">'"$CHARGE_INDICATOR</span>"
 
 TIME_LEFT=$(acpi -b | awk '{print $5}')
 
