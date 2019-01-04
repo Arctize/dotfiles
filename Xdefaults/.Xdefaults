@@ -1,14 +1,21 @@
+! The following options options can be reloaded via USR1 signal.
+st.font:              ubuntu mono:size=12
+st.cursorshape:       6
+st.borderpx:          2
+st.bold_font:         1
+st.mouseScrollLines:  2
+st.opacity:           255
+
+
 URxvt.font:			xft:ubuntu mono
-URxvt.transparent:		true
-URxvt.shading:			20
 URxvt.scrollBar:		false
-*cursorBlink: 			true
-*background: #000000
-*foreground: #ffffff
+URxvt.cursorBlink: 		true
+!URxvt.transparent:		true
+!URxvt.shading:			20
 
-! make blue readable on dark background
-*.color12:      #4488ff
 
+! The following settings are necessary
+! for the mwb-layout to work in vim
 URxvt.keysym.KP_Add: +
 URxvt.keysym.KP_Subtract: –
 URxvt.keysym.KP_Multiply: *
