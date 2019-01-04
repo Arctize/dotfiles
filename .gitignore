@@ -1,3 +1,13 @@
 *.swp
 .stfolder
 vim/.vim/undo/*
+dmenu-extended/.config/dmenu-extended/cache
+dmenu-extended/.config/dmenu-extended/plugins
+dmenu-extended/.config/dmenu-extended/config/dmenuExtended_preferences.txt
+dmenu-extended/.config/dmenu-extended/config/internetSearch.json
+mpd/.mpd/mpd.db
+mpd/.mpd/mpdstate
+mpd/.mpd/playlists
+nvim/.config/nvim/.netrwhist
+ranger/.config/ranger/history
+ranger/.config/ranger/tagged
