@@ -56,7 +56,7 @@ set scrolloff=3
 set mouse=a
 
 set number
-"set relativenumber
+set relativenumber
 
 set cindent
 set noswapfile
@@ -75,14 +75,6 @@ endfunction
 
 let g:vimtex_view_general_viewer = 'zathura'
 
-function UpdateDayNightTheme()
-	if !empty(glob("~/.config/theme/day"))
-		colorscheme lightning
-	else
-		colorscheme onedark
-	endif
-endfunction
-
-call UpdateDayNightTheme()
-
 let g:airline_powerline_fonts = 1
+
+colorscheme onedark
