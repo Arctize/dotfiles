@@ -17,17 +17,17 @@ set $8 c
 set $9 r
 
 
-set_from_resource $fg i3wm.color7 #ffffff
-set_from_resource $bg i3wm.color0 #33333399
+set_from_resource $fg i3wm.foreground #ffffff
+set_from_resource $bg i3wm.color0 #000000
 set_from_resource $alt i3wm.color7 #b58900
-set $al 00
+set $al aa
 
 # autostart
 exec_always ~/git/dmenu-extended/dmenu_extended_cache_build
 #exec feh --bg-tile $WALLPAPER
 exec_always xset r rate 200 50
 exec_always setxkbmap -option 'caps:ctrl_modifier' mwb
-#exec compton -b
+exec compton -b
 exec xcape -e '#66=Escape'
 exec unclutter -idle 10 -root -noevents
 exec nitrogen --restore
@@ -36,13 +36,13 @@ exec nitrogen --restore
 bindsym $mod+d			exec	~/git/dmenu-extended/dmenu_extended_run
 bindsym $mod+shift+d		exec	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
 bindsym $mod+p			exec	passmenu -nb '#fff' -nf '#333' -sb '#8af' -b -fn "liberation mono 12"
-bindsym $mod+Shift+space	exec	urxvt
 bindsym Print			exec	scrot
-bindsym Shift+Print		exec	scrot -u
-bindsym Ctl+Print		exec	xfce4-screenshooter -r
+bindsym shift+Print		exec	scrot -u
+bindsym ctrl+Print		exec	xfce4-screenshooter -r
 
 # program bindings
 bindsym $mod+space		exec	~/git/st/st
+bindsym $mod+Shift+space	exec	xst
 bindsym $mod+b			exec	telegram.sh
 bindsym $mod+x			exec	pavucontrol
 
@@ -53,8 +53,8 @@ bindsym $mod+ampersand		exec	xdotool mousemove_relative 42 0
 bindsym $mod+bracketleft	exec	xdotool mousemove_relative 0 36
 bindsym $mod+braceleft		exec	xdotool mousemove_relative -- -42 0
 
+font pango: ubuntu mono
 # style
-font pango:ubuntu mono
 for_window [title="^.*"] border pixel 0
 for_window [class="^st-256color"] border pixel 1
 for_window [class=(?i)urxvt] border pixel 1
@@ -136,17 +136,15 @@ bindsym $mod+Shift+$8		move container to workspace 8
 bindsym $mod+Shift+$9		move container to workspace 9
 
 # volume control
-bindsym XF86AudioRaiseVolume		exec amixer -q set Master 4%+	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym $mod+Up				exec amixer -q set Master 4%+	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume		exec amixer -q set Master 4%-	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym $mod+Down			exec amixer -q set Master 4%-	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym Shift+XF86AudioRaiseVolume	exec amixer -q set Master 100%	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym Shift+XF86AudioLowerVolume	exec amixer -q set Master 0%	unmute	&& pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute			exec amixer -q set Master toggle	&& pkill -RTMIN+1 i3blocks
+#bindsym XF86AudioRaiseVolume		exec volume.sh up	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Up				exec volume.sh up	&& pkill -RTMIN+1 i3blocks
+#bindsym XF86AudioLowerVolume		exec volume.sh down	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Down			exec volume.sh down	&& pkill -RTMIN+1 i3blocks
+#bindsym XF86AudioMute			exec volume.sh mute	&& pkill -RTMIN+1 i3blocks
 
 # brightness controls
-bindsym XF86MonBrightnessUp		exec xbacklight -inc 10
-bindsym XF86MonBrightnessDown		exec xbacklight -dec 10
+bindsym XF86MonBrightnessUp		exec brightness.sh up
+bindsym XF86MonBrightnessDown		exec brightness.sh down
 bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
 bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
 
@@ -162,7 +160,7 @@ mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
 		bindsym n exec night.sh
 		bindsym r exec systemctl reboot
 		bindsym s exec systemctl poweroff
-		bindsym l exec lock.sh; mode "default"
+		bindsym l exec i3lock_blur.sh; mode "default"
 		bindsym shift+l exec i3lock -p win -ui ~/Pictures/lockscreen.png; mode "default"
 		bindsym Return mode "default"
 		bindsym Escape mode "default"
