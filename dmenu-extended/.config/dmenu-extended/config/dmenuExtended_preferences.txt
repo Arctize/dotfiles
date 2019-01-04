@@ -9,7 +9,7 @@
     "follow_symlinks": false,
     "frequently_used": 1,
     "global_ignore_folders": [],
-    "ignore_folders": ["~/.steam","~/.local/share/Steam","~/win"],
+    "ignore_folders": ["~/.steam","~/.local/share/Steam","~/win", "~/mnt"],
     "include_applications": true,
     "include_binaries": true,
     "include_hidden_files": true,
