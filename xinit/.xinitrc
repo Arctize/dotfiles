@@ -1,35 +1,29 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # Call local sript to set screen layout
-if [ -f ~/.screenlayout/layout.sh ]; then
-	sh ~/.screenlayout/layout.sh
-fi
+[[ -f ~/.screenlayout/layout.sh ]] && sh ~/.screenlayout/layout.sh
 
-# Set key repeat rate
-xset r rate 200 50
+# Run keyboard setup script
+xkbsetup.sh
 
-# Map Caps to Ctrl
-setxkbmap -option 'caps:ctrl_modifier'
-
-# Compile and set mwb-layout
-setxkbmap -I ~/.xkb mwb -print | xkbcomp -I$HOME/.xkb - $DISPLAY 2>/dev/null
-
-# Use Caps as ESC and Ctrl modifier
-xcape -e '#66=Escape' &
-
-# Hide cursor after 5 sec
-unclutter -idle 5 -root -noevents &
+# Read .Xresources if available
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 TWM=true
 
 if [ $TWM = true ]; then
-	# Active colorscheme using pywal
-	wal -R
 
-	# Set dpi setting when running on Dell XPS
+	# Increase dpi when running on Dell XPS
 	if [ $HOSTNAME = xps ]; then
-		xrdb -merge $HOME/.Xft.hipdi
+		echo 'Xft.dpi: 150' | xrdb -merge
 	fi
+
+	# Use pywal to set theme
+	wal -R -o dunst_wal.sh
+
+	# Dunst will already be started by dunst_wal.sh, but
+	# try to start it again anyway in case wal didn't work
+	dunst &
 
 	exec i3
 else
