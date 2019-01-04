@@ -19,10 +19,8 @@ if [ $TWM = true ]; then
 	fi
 
 	# Use pywal to set theme
-	wal -R -o dunst_wal.sh
+	wal -R -o wal_setup.sh
 
-	# Dunst will already be started by dunst_wal.sh, but
-	# try to start it again anyway in case wal didn't work
 	dunst &
 
 	exec i3
