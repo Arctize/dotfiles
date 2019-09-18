@@ -3,7 +3,7 @@
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
-	*) return;;
+	*) return ;;
 esac
 
 # Don't put duplicate lines or lines starting with space in the history.
@@ -28,13 +28,13 @@ shopt -s autocd
 bind 'set echo-control-characters off'
 
 # Enable vi mode
-set -o vi
-bind -m vi-insert "\c-l":clear-screen
-bind 'set show-mode-in-prompt on'
+#set -o vi
+#bind -m vi-insert "\c-l":clear-screen
+#bind 'set show-mode-in-prompt on'
 
-# Change cursor and mode-string depending on mode.
-bind 'set vi-cmd-mode-string "\1\x1b[\x30 q\e[31;1m\2>\1\033[m\2"'
-bind 'set vi-ins-mode-string "\1\x1b[\x35 q\e[32;1m\2▸\1\033[m\2"'
+# Change the terminal cursor to a pipe in vi-mode and to a box in cmd mode.
+#bind 'set vi-cmd-mode-string "\1\x1b[\x30 q\e[31;1m\2>\1\033[m\2"'
+#bind 'set vi-ins-mode-string "\1\x1b[\x35 q\e[32;1m\2▸\1\033[m\2"'
 
 # Enable color support of ls/grep
 if [ -x /usr/bin/dircolors ]; then
@@ -56,16 +56,16 @@ blue="\[\e[34;1m\]"
 grey="\[\e[37;1m\]"
 off="\[\033[m\]"
 
-function setprompt {
+function setprompt() {
 
 	# Check exit status of last command and change the color accordingly
-	if [ $? -eq 0 ];then
+	if [ $? -eq 0 ]; then
 		statuscolor="$green"
 	else
 		statuscolor="$red"
 	fi
 
-	# Check if we're inside a git directory and, if so, display the branch name
+	# Check if we're inside a git root directory and, if so, display the branch name
 	gitbranch=$(sed -e 's/.*\///' .git/HEAD 2>/dev/null)
 	if [ "$gitbranch" ]; then
 		gitstatus=" $grey($gitbranch)"
@@ -75,9 +75,11 @@ function setprompt {
 
 	PS1="$bold\h $blue\w$gitstatus $statuscolor\$ $off"
 	PS2="$bold>$off "
+
+	echo -e -n "\x1b[\x36 q"
 }
 
-PROMPT_DIRTRIM=2
+PROMPT_DIRTRIM=3
 PROMPT_COMMAND=setprompt
 
 # Colored GCC warnings and errors
@@ -92,9 +94,6 @@ else
 	export EDITOR=vi
 fi
 
-# mimeopen uses the TERMINAL variable
-export TERMINAL='st -f "ubuntu mono:size=12" -e'
-
 # Alias definitions.
 alias r='ranger'
 alias v='$EDITOR'
@@ -103,6 +102,9 @@ alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
 alias peerflix='peerflix --mpv'
+
+# mimeopen uses the TERMINAL variable
+export TERMINAL='st -f "ubuntu mono:size=12" -e'
 
 # Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -115,26 +117,26 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-# Enable scripts for base16 color schemes when running st
+# Either load wal theme or enable scripts for base16 color schemes when running st
 if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
 		(cat ~/.cache/wal/sequences &)
 	else
-		BASE16_SHELL=$HOME/.config/base16-shell/
-		[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+		# Base16 Shell
+		BASE16_SHELL="$HOME/.config/base16-shell/"
+		[ -n "$PS1" ] &&
+			[ -s "$BASE16_SHELL/profile_helper.sh" ] &&
+			eval "$("$BASE16_SHELL/profile_helper.sh")"
 	fi
 fi
 
 # Move prompt to bottom resp. top of the terminal
-down () {
+down() {
 	for i in $(seq $(tput lines)); do echo; done
 	bind -x '"\C-l": clear; down'
 }
 
-up () {
+up() {
 	bind -x '"\C-l": clear'
 	clear
 }
-
-# Add fuck alias
-alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
