@@ -51,6 +51,11 @@ CHARGE_INDICATOR='<span foreground="#f7e30e">'"$CHARGE_INDICATOR</span>"
 
 TIME_LEFT=$(acpi -b | awk '{print $5}')
 
+# To hide acpi's "rate information unavailable" message
+if [[ "$TIME_LEFT" = "rate" ]]; then
+	TIME_LEFT=""
+fi
+
 
 echo "$ICON$CHARGE_INDICATOR $BAT_PERC% $TIME_LEFT"
 
