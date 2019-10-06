@@ -1,5 +1,6 @@
 ! The following options options can be reloaded via USR1 signal.
-st.font:              ubuntu mono:size=12
+st.termname:          st-256color
+st.font:              cascadia code:size=12
 st.cursorshape:       6
 st.borderpx:          2
 st.bold_font:         1
