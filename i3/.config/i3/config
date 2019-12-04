@@ -1,3 +1,5 @@
+# i3 config file (v4)
+
 # define variables
 set $mod Mod4
 
@@ -17,32 +19,33 @@ set $8 c
 set $9 r
 
 # define colors
-set $fg #ffffff
-set $bg #000000
-set $alt #b58900
-set $al aa
+set_from_resource $fg i3wm.foreground #ffffff
+set_from_resource $bg i3wm.background #000000
+set_from_resource $alt i3wm.color7 #b58900
+set $al ff
 
 # autostart
-exec_always --no-startup-id dmenu_extended_cache_build
 exec_always --no-startup-id xset r rate 200 50
 exec_always --no-startup-id setxkbmap -option 'caps:ctrl_modifier' mwb
 exec --no-startup-id xcape -e '#66=Escape'
-exec --no-startup-id unclutter -idle 10 -root -noevents
+exec --no-startup-id unclutter -idle 10 -root
 exec --no-startup-id redshift &
+exec --no-startup-id nitrogen --restore
 
 # shortcuts
 bindsym $mod+d			exec	dmenu_extended_run
 bindsym $mod+shift+d		exec	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
 bindsym $mod+p			exec	passmenu -nb '#fff' -nf '#333' -sb '#8af' -b -fn "liberation mono 12"
-bindsym Print			exec	scrot
-bindsym shift+Print		exec	scrot -u
-bindsym ctrl+Print		exec	xfce4-screenshooter -r
+bindsym Print			exec	maim ~/Pictures/screenshot_$(date +%s).png
+bindsym shift+Print		exec	maim -s ~/Pictures/screenshot_$(date +%s).png
+bindsym ctrl+Print		exec	maim | xclip -selection clipboard -t image/png
+bindsym ctrl+shift+Print	exec	maim -s | xclip -selection clipboard -t image/png
 
 # program bindings
 bindsym $mod+space		exec	xst
-bindsym $mod+Shift+space	exec	~/git/st/st
-bindsym $mod+b			exec	telegram.sh
-bindsym $mod+x			exec	dbus-launch pavucontrol
+bindsym $mod+Shift+space	exec	gnome-terminal
+bindsym $mod+b			exec	telegram-desktop
+bindsym $mod+x			exec	pavucontrol
 
 # X bindings
 bindsym $mod+dollar		exec	xcalib -invert -alter
@@ -66,18 +69,24 @@ for_window [class="Gnome-terminal"] border pixel 2
 for_window [title="Authy"] floating enable
 for_window [class=(?i)pavucontrol] floating enable
 for_window [class=(?i)telegram*] floating enable
+for_window [class=(?i)riot] floating enable
 for_window [class=(?i)pinentry] floating enable
 for_window [class=(?i)steam] floating enable
 for_window [class=(?i)blueman-manager] floating enable
 for_window [window_role=pop-up] floating enable
+for_window [class=(?i)usbguard-applet-qt] floating enable
+for_window [class=(?i)keepassxc] floating enable
+for_window [class=(?i)bitwarden] floating enable
+for_window [class=(?i)lutris] floating enable
 
 # additional rules for when running i3 inside plasma
 for_window [class=plasmashell title="Desktop"] kill
 for_window [class=plasmashell] floating enable
 
 # gaps
-gaps inner 0
-gaps outer 0
+gaps inner 30
+gaps outer 10
+smart_gaps on
 
 # close/kill
 bindsym $mod+q		kill
@@ -141,16 +150,16 @@ bindsym $mod+Shift+$8		move container to workspace 8
 bindsym $mod+Shift+$9		move container to workspace 9
 
 # volume control
-#bindsym XF86AudioRaiseVolume		exec volume.sh up	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume		exec volume.sh up	&& pkill -RTMIN+1 i3blocks
 bindsym $mod+Up				exec volume.sh up	&& pkill -RTMIN+1 i3blocks
-#bindsym XF86AudioLowerVolume		exec volume.sh down	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume		exec volume.sh down	&& pkill -RTMIN+1 i3blocks
 bindsym $mod+Down			exec volume.sh down	&& pkill -RTMIN+1 i3blocks
-#bindsym XF86AudioMute			exec volume.sh mute	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute			exec volume.sh mute	&& pkill -RTMIN+1 i3blocks
 
 # brightness controls
-#bindsym XF86MonBrightnessUp		exec brightness.sh up
+bindsym XF86MonBrightnessUp		exec brightness.sh up
 bindsym $mod+Right			exec brightness.sh up
-#bindsym XF86MonBrightnessDown		exec brightness.sh down
+bindsym XF86MonBrightnessDown		exec brightness.sh down
 bindsym $mod+Left			exec brightness.sh down
 bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
 bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
@@ -168,8 +177,10 @@ mode $cmd_menu {
 		bindsym n exec night.sh
 		bindsym r exec systemctl reboot
 		bindsym s exec systemctl poweroff
-		bindsym l exec i3lock_blur.sh; mode "default"
+		bindsym l exec gllock; mode "default"
+		bindsym slash exec i3lock -p win -i ~/Pictures/misc/bluescreen.png -u; mode "default"
 		bindsym t exec pkill -USR1 redshift
+		bindsym m exec xkbswitch.sh
 		bindsym Return mode "default"
 		bindsym Escape mode "default"
 }
