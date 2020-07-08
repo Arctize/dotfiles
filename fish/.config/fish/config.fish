@@ -1,4 +1,8 @@
-sh ~/.config/base16-shell/scripts/base16-solar-flare.sh
 set -x PATH ~/bin ~/.local/bin $PATH
-set -x WALLPAPER "~/.wallpaper"
-set -x EDITOR /usr/bin/vim
+set -x EDITOR /usr/bin/nvim
+set fish_greeting
+alias v="$EDITOR"
+alias r="ranger"
+alias l='ls -Cf'
+alias ll="ls -lh"
+alias la="ls -A"
