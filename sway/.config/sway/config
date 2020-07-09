@@ -1,0 +1,223 @@
+# variables
+set $mod Mod4
+
+set $up period
+set $down e
+set $right u
+set $left o
+
+set $1 m
+set $2 w
+set $3 v
+set $4 h
+set $5 t
+set $6 n
+set $7 g
+set $8 c
+set $9 r
+
+input * {
+	xkb_layout "mwb,us"
+	xkb_options "caps:escape"
+	repeat_delay 200
+	repeat_rate 50
+}
+
+output * {
+	background ~/Pictures/wallpapers/butterfly-2049567.jpg fill
+}
+
+output "eDP-1" {
+	scale 1.5
+}
+
+#set_from_resource $fg i3wm.foreground #ffffff
+#set_from_resource $bg i3wm.color0 #000000
+#set_from_resource $alt i3wm.color7 #b58900
+set $fg #ffffff
+set $bg #000000
+set $alt #b58900
+set $al aa
+
+# autostart
+exec_always --no-startup-id dmenu_extended_cache_build
+exec_always --no-startup-id xset r rate 200 50
+exec_always --no-startup-id setxkbmap -option 'caps:ctrl_modifier' mwb
+exec --no-startup-id xcape -e '#66=Escape'
+exec --no-startup-id unclutter -idle 10 -root -noevents
+exec --no-startup-id nitrogen --restore
+
+# shortcuts
+bindsym $mod+d			exec	dmenu_extended_run
+bindsym $mod+shift+d		exec	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "liberation mono 12"
+bindsym $mod+p			exec	passmenu -nb '#fff' -nf '#333' -sb '#8af' -b -fn "liberation mono 12"
+bindsym Print			exec	scrot
+bindsym shift+Print		exec	scrot -u
+bindsym ctrl+Print		exec	xfce4-screenshooter -r
+
+# program bindings
+bindsym $mod+space		exec	xst
+bindsym $mod+Shift+space	exec	~/git/st/st
+bindsym $mod+b			exec	telegram.sh
+bindsym $mod+x			exec	dbus-launch pavucontrol
+
+# X bindings
+bindsym $mod+dollar		exec	xcalib -invert -alter
+bindsym $mod+shift+dollar	exec	xdotool click --repeat 50 --delay 3 1
+bindsym $mod+ampersand		exec	xdotool mousemove_relative 42 0
+bindsym $mod+bracketleft	exec	xdotool mousemove_relative 0 36
+bindsym $mod+braceleft		exec	xdotool mousemove_relative -- -42 0
+
+# style
+font pango: ubuntu mono
+for_window [title="^.*"] border pixel 0
+for_window [class="^st-256color"] border pixel 1
+for_window [class=(?i)urxvt] border pixel 1
+for_window [class="Gnome-terminal"] border pixel 1
+for_window [title="Authy"] floating enable
+for_window [class=(?i)pavucontrol] floating enable
+for_window [class=(?i)telegram*] floating enable
+for_window [class=(?i)pinentry] floating enable
+for_window [class=(?i)steam] floating enable
+for_window [window_role=pop-up] floating enable
+
+# additional rules for i3 inside plasma
+for_window [class=plasmashell title="Desktop"] kill
+for_window [class=plasmashell] floating enable
+
+# gaps
+gaps inner 25
+gaps outer 0
+
+# close/kill
+bindsym $mod+q		kill
+bindsym $mod+Shift+q	exec xdotool getwindowfocus windowkill
+
+# fullscreen
+bindsym $mod+f	fullscreen
+bindsym $mod+Shift+f fullscreen global
+
+# change focus
+bindsym $mod+$left	focus left
+bindsym $mod+$down	focus down
+bindsym $mod+$up	focus up
+bindsym $mod+$right	focus right
+
+# move focused window
+bindsym $mod+Shift+$left	move left	100px
+bindsym $mod+Shift+$down	move down	30px
+bindsym $mod+Shift+$up		move up		30px
+bindsym $mod+Shift+$right	move right	100px
+
+# change split orientation
+bindsym $mod+a	split v
+bindsym $mod+i	split h
+
+# floating
+floating_modifier $mod
+bindsym $mod+Shift+Return	floating toggle
+bindsym $mod+Return		focus mode_toggle
+
+# scratchpad
+bindsym $mod+Shift+s	move scratchpad
+bindsym $mod+s		scratchpad show
+
+# marks
+bindsym $mod+semicolon		exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go to: '
+bindsym $mod+shift+semicolon	exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+
+# switch workspace
+bindsym Mod1+Ctrl+$right	workspace next
+bindsym Mod1+Ctrl+$left		workspace prev
+bindsym $mod+$1			workspace 1
+bindsym $mod+$2			workspace 2
+bindsym $mod+$3			workspace 3
+bindsym $mod+$4			workspace 4
+bindsym $mod+$5			workspace 5
+bindsym $mod+$6			workspace 6
+bindsym $mod+$7			workspace 7
+bindsym $mod+$8			workspace 8
+bindsym $mod+$9			workspace 9
+
+# move focused window to workspace
+bindsym $mod+Shift+$1		move container to workspace 1
+bindsym $mod+Shift+$2		move container to workspace 2
+bindsym $mod+Shift+$3		move container to workspace 3
+bindsym $mod+Shift+$4		move container to workspace 4
+bindsym $mod+Shift+$5		move container to workspace 5
+bindsym $mod+Shift+$6		move container to workspace 6
+bindsym $mod+Shift+$7		move container to workspace 7
+bindsym $mod+Shift+$8		move container to workspace 8
+bindsym $mod+Shift+$9		move container to workspace 9
+
+# volume control
+#bindsym XF86AudioRaiseVolume		exec volume.sh up	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Up				exec volume.sh up	&& pkill -RTMIN+1 i3blocks
+#bindsym XF86AudioLowerVolume		exec volume.sh down	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Down			exec volume.sh down	&& pkill -RTMIN+1 i3blocks
+#bindsym XF86AudioMute			exec volume.sh mute	&& pkill -RTMIN+1 i3blocks
+
+# brightness controls
+#bindsym XF86MonBrightnessUp		exec brightness.sh up
+bindsym $mod+Right			exec brightness.sh up
+#bindsym XF86MonBrightnessDown		exec brightness.sh down
+bindsym $mod+Left			exec brightness.sh down
+bindsym shift+XF86MonBrightnessUp	exec xbacklight -set 100
+bindsym shift+XF86MonBrightnessDown	exec xbacklight -set 0
+
+# restart
+bindsym $mod+slash		reload
+bindsym $mod+Shift+slash	restart
+
+# sysmenu
+bindsym $mod+Escape mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock"
+mode "System: [E]xit i3 -  [R]eboot - [S]hutdown - [L]ock" {
+	bindsym e exec sway exit
+		bindsym d exec day.sh
+		bindsym n exec night.sh
+		bindsym r exec systemctl reboot
+		bindsym s exec systemctl poweroff
+		bindsym l exec i3lock_blur.sh; mode "default"
+		bindsym shift+l exec i3lock -p win -ui ~/Pictures/lockscreen.png; mode "default"
+		bindsym Return mode "default"
+		bindsym Escape mode "default"
+}
+
+# resize mode
+bindsym $mod+z mode "Resize/Gaps mode"
+mode "Resize/Gaps mode" {
+	bindsym $left resize shrink width 10 px or 10 ppt
+		bindsym $down resize grow height 10 px or 10 ppt
+		bindsym $up resize shrink height 10 px or 10 ppt
+		bindsym $right resize grow width 10 px or 10 ppt
+		bindsym Shift+$left gaps outer all minus 5
+		bindsym Shift+$right gaps outer all plus 5
+		bindsym Shift+$down gaps inner all minus 5
+		bindsym Shift+$up gaps inner all plus 5
+		bindsym Return mode "default"
+		bindsym Escape mode "default"
+}
+
+
+#colors			backgr. border. text    indicator
+client.focused		#00ff00 $fg	$fg	$bg	$bg
+client.focused_inactive	#0000ff $bg	$bg55	$bg55	$bg
+client.unfocused	#333333 $bg	$bg55	$bg55	$bg
+client.urgent		#2f343a $alt	$bg55	$bg55	$bg
+
+# i3bar
+bar {
+#	i3bar_command  i3bar -t
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+		mode hide
+		position top
+		colors {
+			background $bg$al
+				statusline $fg
+				separator $alt
+				focused_workspace  $bg$al $bg$al $fg
+				active_workspace   $bg$al $bg$al $fg
+				inactive_workspace $bg$al $bg$al $alt
+				urgent_workspace   $alt $bg$al $fg
+		}
+}
