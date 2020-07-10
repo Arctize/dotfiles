@@ -15,13 +15,28 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term alacritty
+
+# Load colors from pywal theme
+include "$HOME/.cache/wal/colors-sway
+
+# Append 'e5' for the alpha channel, since syntax
+# doesn't allow multiple variables
+set $bg_alpha $backgrounde5
+set $fg_alpha $foregrounde5
+
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | bemenu | xargs swaymsg exec --
+set $bemenu bemenu -b -i \
+	    --nb=$bg_alpha --nf=$fg_alpha \
+	    --sb=$fg_alpha --sf=$bg_alpha \
+	    --fb=$bg_alpha --ff=$fg_alpha \
+	    --hb=$fg_alpha --hf=$bg_alpha \
+	    --tb=$bg_alpha --tf=$fg_alpha
+set $menu dmenu_path | $bemenu | xargs swaymsg exec --
 
 #
-### Custom additions
+### Custom configs
 #
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
@@ -33,29 +48,30 @@ bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-# Load vars from pywal
-include "$HOME/.cache/wal/colors-sway
 
-# window decorations
+# Window rules
 default_border none
 for_window [app_id=(?i)$term] border pixel 2
-client.focused		$color0 $foreground $background $color7 $foreground
-client.focused_inactive	$color0 $background $foreground $color7 $background
-client.unfocused	$color0 $background $foreground $color7 $background
-client.urgent		$color0 $background $foreground $color7 $background
 
-#output * background $wallpaper fill
-output * bg $HOME/Pictures/wallpapers/tannenzapfen.jpeg fill
+# Window border colors
+client.focused             $color0 $foreground $background $color7 $foreground
+client.focused_inactive    $color0 $background $foreground $color7 $background
+client.unfocused           $color0 $background $foreground $color7 $background
+client.urgent              $color0 $background $foreground $color7 $background
+
+# Wallpaper
+set $wallpaper "/usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png"
+output * background $wallpaper fill
 
 input * {
        repeat_delay 200
 }
 
 output "eDP-1" {
-	scale 2
+       scale 2
 }
 
-# gaps
+# Gaps
 gaps inner 30
 gaps outer 10
 
@@ -122,8 +138,6 @@ gaps outer 10
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -212,36 +226,44 @@ gaps outer 10
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
     bindsym $mod+minus scratchpad show
-#
-# Resizing containers:
-#
-mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
 
-    # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-
-    # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+#
+# System Menu
+#
+set $cmd_menu "System: [E]xit - [R]eboot - [S]hutdown - [L]ock"
+bindsym $mod+Escape mode $cmd_menu
+mode $cmd_menu {
+        bindsym e exec sway exit
+        bindsym r exec systemctl reboot
+        bindsym s exec systemctl poweroff
+        bindsym l exec swaylock -F -e -i $wallpaper -s fill; mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+
+#
+# Resize mode
+#
+set $resize_mode "Resize mode: Shift+{up/down}: Inner gaps, Shift+{left/right}: Outer gaps"
+bindsym $mod+r mode $resize_mode
+mode $resize_mode {
+        bindsym $left resize shrink width 10 px or 10 ppt
+        bindsym $down resize grow height 10 px or 10 ppt
+        bindsym $up resize shrink height 10 px or 10 ppt
+        bindsym $right resize grow width 10 px or 10 ppt
+        bindsym Shift+$left gaps outer all minus 5
+        bindsym Shift+$right gaps outer all plus 5
+        bindsym Shift+$down gaps inner all minus 5
+        bindsym Shift+$up gaps inner all plus 5
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-set $alpha e5 # ~= 0.9
 bar {
     position top
     mode hide
@@ -252,15 +274,14 @@ bar {
     status_command i3blocks -c ~/.config/i3/i3blocks.conf
 
     colors {
-	# Appended 'e5' is for the alpha channel, since syntax doesn't
-        # allow for two variables.
         statusline $foreground
-        background $backgrounde5
+        background $bg_alpha
         separator $color8
-	focused_workspace  $foregrounde5 $foregrounde5 $background
-	active_workspace   $backgrounde5 $backgrounde5 $foreground
-	inactive_workspace $backgrounde5 $backgrounde5 $foreground
-	urgent_workspace   $color7     $color8     $color9
+                           # border      # background  # text
+        focused_workspace  $fg_alpha     $fg_alpha     $background
+        active_workspace   $bg_alpha     $bg_alpha     $foreground
+        inactive_workspace $bg_alpha     $bg_alpha     $foreground
+        urgent_workspace   $fg_alpha     $fg_alpha     $background
     }
 }
 
