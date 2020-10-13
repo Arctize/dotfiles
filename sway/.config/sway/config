@@ -1,8 +1,11 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
 # Read `man 5 sway` for a complete reference.
+
+# Author: Patrick Wicki <patrick.wicki96 at gmail dot com>
+# Adapted from example config
+#
+# Dependencies:
+#    swaylock swayidle swaybg waybar bemenu j4-dmenu-desktop alacritty
+#    grim wl-clipboard slurp barify pywal
 
 ### Variables
 #
@@ -34,22 +37,39 @@ set $bemenu bemenu -b -i \
 	    --hb=$fg_alpha --hf=$bg_alpha \
 	    --tb=$bg_alpha --tf=$fg_alpha
 set $menu dmenu_path | $bemenu | xargs swaymsg exec --
+set $menu_alt dmenu_path | j4-dmenu-desktop --dmenu="$bemenu" | xargs swaymsg exec --
 
 #
 ### Custom configs
 #
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Startup
+exec_always mako --background-color=$bg_alpha --text-color=$foreground \
+		--anchor=bottom-right --progress-color=#666666
+
+# Media keys
+bindsym XF86AudioRaiseVolume exec barify vol up
+bindsym XF86AudioLowerVolume exec barify vol down
+bindsym XF86AudioMute exec barify vol mute
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessUp exec barify brightness up
+bindsym XF86MonBrightnessDown exec barify brightness down
 bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
+# Screenshots to file
+bindsym Print			exec	grimshot save screen
+bindsym Mod1+Print		exec	grimshot save win
+bindsym shift+Print		exec	grimshot save area
 
-# Window rules
+# Screenshots to clipboard
+bindsym ctrl+Print		exec	grimshot copy screen
+bindsym ctrl+Mod1+Print 	exec	grimshot copy win
+bindsym ctrl+shift+Print	exec	grimshot copy area
+
+# Style
+font pango: Roboto Regular
 default_border none
 for_window [app_id=(?i)$term] border pixel 2
 
@@ -60,15 +80,22 @@ client.unfocused           $color0 $background $foreground $color7 $background
 client.urgent              $color0 $background $foreground $color7 $background
 
 # Wallpaper
-set $wallpaper "/usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png"
+set $wallpaper "$HOME/Pictures/wallpapers/pinecone.jpg"
 output * background $wallpaper fill
 
 input * {
        repeat_delay 200
+       xkb_layout "us"
+       xkb_variant "altgr-intl"
+       xkb_options "caps:escape"
 }
 
 output "eDP-1" {
-       scale 2
+       scale 1.75
+}
+
+output "DP-1" {
+       mode 1920x1080@144.001007Hz
 }
 
 # Gaps
@@ -127,6 +154,7 @@ gaps outer 10
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+shift+d exec $menu_alt
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -259,20 +287,20 @@ mode $resize_mode {
         bindsym Escape mode "default"
 }
 
-
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position top
-    mode hide
+   position top
+   icon_theme Papirus
+   #swaybar_command waybar
+   mode hide
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     # status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
     status_command i3blocks -c ~/.config/i3/i3blocks.conf
-
     colors {
         statusline $foreground
         background $bg_alpha
