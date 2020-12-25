@@ -56,6 +56,13 @@ blue="\[\e[34;1m\]"
 grey="\[\e[37;1m\]"
 off="\[\033[m\]"
 
+source /usr/share/git/git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM="auto"
+
 function setprompt() {
 
 	# Check exit status of last command and change the color accordingly
@@ -65,15 +72,7 @@ function setprompt() {
 		statuscolor="$red"
 	fi
 
-	# Check if we're inside a git root directory and, if so, display the branch name
-	gitbranch=$(sed -e 's/.*\///' .git/HEAD 2>/dev/null)
-	if [ "$gitbranch" ]; then
-		gitstatus=" $grey($gitbranch)"
-	else
-		gitstatus=""
-	fi
-
-	PS1="$bold\h $blue\w$gitstatus $statuscolor\$ $off"
+	PS1="$bold\h $blue\w$off$(__git_ps1) $statuscolor\$ $off"
 	PS2="$bold>$off "
 
 	echo -e -n "\x1b[\x36 q"
@@ -118,7 +117,8 @@ if ! shopt -oq posix; then
 fi
 
 # Either load wal theme or enable scripts for base16 color schemes when running st
-if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
+#if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
+if [ "$TERM" == "st-256color" ] || [ "$TERM" == "alacritty" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
 		(cat ~/.cache/wal/sequences &)
 	else
