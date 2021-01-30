@@ -1,0 +1,245 @@
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+# preferred terminal emulator
+set $term alacritty
+
+# load colors from pywal
+set_from_resource $foreground foreground #ffffff
+set_from_resource $background background #000000
+
+# autostart
+exec --no-startup-id wal -R -o dunst.sh
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id xset r rate 200 50
+exec --no-startup-id setxkbmap -option 'caps:ctrl_modifier' us altgr-intl
+
+# application launcher
+bindsym $mod+d			exec	dmenu_extended_run
+bindsym $mod+shift+d		exec	dmenu_run -nb '#333' -nf '#fff' -sb '#8af' -b -fn "ubuntu mono 12"
+
+
+# Media keys
+bindsym XF86AudioRaiseVolume exec barify vol up
+bindsym XF86AudioLowerVolume exec barify vol down
+bindsym XF86AudioMute exec barify vol mute
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessUp exec barify brightness up
+bindsym XF86MonBrightnessDown exec barify brightness down
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# screenshots to file
+bindsym Print			exec	maim ~/Pictures/screenshot_$(date +%s).png
+bindsym shift+Print		exec	maim -s ~/Pictures/screenshot_$(date +%s).png
+bindsym mod1+Print		exec	maim -i $(xdotool getactivewindow) ~/Pictures/screenshot_$(date +%s).png
+
+# screenshots to clipboard
+bindsym ctrl+Print		exec	maim | xclip -selection clipboard -t image/png
+bindsym ctrl+shift+Print	exec	maim -s | xclip -selection clipboard -t image/png
+bindsym mod1+shift+Print	exec	maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+
+# styling rules
+default_border pixel 2
+for_window [class=(?i)alacritty] border pixel 2
+for_window [class=(?i)telegram*] floating enable
+for_window [class=(?i)riot] floating enable
+for_window [class=(?i)pinentry] floating enable
+for_window [class=(?i)steam] floating enable
+for_window [class=(?i)blueman-manager] floating enable
+for_window [class=(?i)nautilus] floating enable
+for_window [class=(?i)zoom] floating enable
+for_window [window_role=pop-up] floating enable
+
+smart_borders on
+
+
+# Gaps
+gaps inner 16
+gaps outer 0
+
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    bindsym $mod+n exec telegram-desktop
+
+    # Kill focused window
+    bindsym $mod+q kill
+    bindsym $mod+Shift+q exec xdotool getwindowfocus windowkill
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c restart
+
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace 1
+    bindsym $mod+2 workspace 2
+    bindsym $mod+3 workspace 3
+    bindsym $mod+4 workspace 4
+    bindsym $mod+5 workspace 5
+    bindsym $mod+6 workspace 6
+    bindsym $mod+7 workspace 7
+    bindsym $mod+8 workspace 8
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace 1
+    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+3 move container to workspace 3
+    bindsym $mod+Shift+4 move container to workspace 4
+    bindsym $mod+Shift+5 move container to workspace 5
+    bindsym $mod+Shift+6 move container to workspace 6
+    bindsym $mod+Shift+7 move container to workspace 7
+    bindsym $mod+Shift+8 move container to workspace 8
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+
+
+# window decoration	backgr.     border.     text            indicator
+client.focused		$background $foreground	$background	$background
+client.focused_inactive	$background $background	$foreground	$background
+client.unfocused	$background $background	$foreground	$background
+client.urgent		$background $foreground	$background	$background
+
+
+#
+# System Menu
+#
+set $cmd_menu "System: [E]xit - [R]eboot - [S]hutdown - [L]ock"
+bindsym $mod+Escape mode $cmd_menu
+mode $cmd_menu {
+        bindsym e exec i3 exit
+        bindsym r exec systemctl reboot
+        bindsym s exec systemctl poweroff
+        bindsym l exec i3lock_blur.sh; mode "default";
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+#
+# Resize mode
+#
+set $resize_mode "Resize mode: Shift+{up/down}: Inner gaps, Shift+{left/right}: Outer gaps"
+bindsym $mod+r mode $resize_mode
+mode $resize_mode {
+        bindsym $left resize shrink width 10 px or 10 ppt
+        bindsym $down resize grow height 10 px or 10 ppt
+        bindsym $up resize shrink height 10 px or 10 ppt
+        bindsym $right resize grow width 10 px or 10 ppt
+        bindsym Shift+$left gaps outer all minus 5
+        bindsym Shift+$right gaps outer all plus 5
+        bindsym Shift+$down gaps inner all minus 5
+        bindsym Shift+$up gaps inner all plus 5
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+#
+# Status Bar:
+#
+bar {
+    position top
+
+    i3bar_command  i3bar
+    status_command i3status-rs
+    font pango:DejaVu Sans Mono, FontAwesome 9
+
+    colors {
+        statusline $foreground
+        background $background
+        separator $alt
+                           # border      # background  # text
+        focused_workspace  $foreground     $foreground     $background
+        active_workspace   $background     $background     $foreground
+        inactive_workspace $background     $background     $foreground
+        urgent_workspace   $foreground     $foreground     $background
+    }
+}
