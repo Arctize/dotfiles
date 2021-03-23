@@ -56,7 +56,7 @@ blue="\[\e[34;1m\]"
 grey="\[\e[37;1m\]"
 off="\[\033[m\]"
 
-source /usr/share/git/git-prompt.sh
+source /usr/share/git/git-prompt.sh 2>/dev/null || source /usr/share/git-core/contrib/completion/git-prompt.sh
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
