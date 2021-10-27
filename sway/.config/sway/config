@@ -40,37 +40,41 @@ set $bemenu bemenu -b -i \
 	    --hb=$fg_alpha --hf=$bg_alpha \
 	    --tb=$bg_alpha --tf=$fg_alpha \
 	    --fn=$font
-set $menu dmenu_path | $bemenu | xargs swaymsg exec --
-set $menu_alt dmenu_extended_run
+
+set $menu ulauncher-toggle
+set $menu_alt dmenu_path | $bemenu | xargs swaymsg exec --
 set $screenshot /usr/share/sway/scripts/grimshot
-set $lock swaylock -fFS --clock --ring-color 01579B --fade-in 0.4 --effect-blur 12x8 --effect-vignette 0.4x0.4
+set $lock swaylock -fFS --clock --ring-color 01579B --text-color AAAAAA --fade-in 0.4 --effect-blur 12x8
 
 # Startup
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec eval $(gnome-keyring-daemon --start) && systemctl --user set-environment SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec mako --background-color=$bg_alpha --text-color=$foreground \
 		--anchor=bottom-right --progress-color=#666666 \
 		--default-timeout=6000
 
 # Media keys
-bindsym XF86AudioRaiseVolume exec barify vol up
-bindsym XF86AudioLowerVolume exec barify vol down
-bindsym XF86AudioMute exec barify vol mute
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86MonBrightnessUp exec barify brightness up
-bindsym XF86MonBrightnessDown exec barify brightness down
-bindsym --locked XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioRaiseVolume    exec barify vol up
+bindsym XF86AudioLowerVolume    exec barify vol down
+bindsym XF86AudioMute           exec barify vol mute
+bindsym XF86AudioMicMute        exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessUp     exec barify brightness up
+bindsym XF86MonBrightnessDown   exec barify brightness down
+bindsym --locked XF86AudioPlay  exec playerctl play-pause
+bindsym XF86AudioNext           exec playerctl next
+bindsym XF86AudioPrev           exec playerctl previous
 
 # Screenshots to file
-bindsym Print			exec	$screenshot save screen
-bindsym Mod1+Print		exec	$screenshot save win
-bindsym shift+Print		exec	$screenshot save area
+bindsym Print			exec	$screenshot save screen --notify
+bindsym Mod1+Print		exec	$screenshot save win --notify
+bindsym shift+Print		exec	$screenshot save area --notify
 
 # Screenshots to clipboard
-bindsym ctrl+Print		exec	$screenshot copy screen
-bindsym ctrl+Mod1+Print 	exec	$screenshot copy win
-bindsym ctrl+shift+Print	exec	$screenshot copy area
+bindsym ctrl+Print          exec	$screenshot copy screen --notify
+bindsym ctrl+Mod1+Print     exec	$screenshot copy win --notify
+bindsym ctrl+shift+Print    exec	$screenshot copy area --notify
 
 # Style
 default_border pixel 1
@@ -125,8 +129,13 @@ gaps outer 0
 # Example configuration:
 #
     # Disable mouse acceleration
-    input "*" {
+    input "type:pointer" {
         accel_profile flat
+    }
+
+    input "type:touchpad" {
+        dwt enabled
+        tap enabled
     }
 
 #
