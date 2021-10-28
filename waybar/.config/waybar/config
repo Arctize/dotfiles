@@ -2,6 +2,9 @@
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
     "modules-right": ["custom/media", "idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
+    "sway/window": {
+        "max-length": 30
+    },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -22,7 +25,7 @@
     },
     "memory": {
         "interval": 5,
-        "format": "{used:0.1f}G/{total:0.1f}G",
+        "format": "{used:0.1f}/{total:0.1f}GiB",
         "states": {
             "low": 0,
             "mid": 25,
@@ -30,7 +33,8 @@
         }
     },
     "backlight": {
-        "interval": 5,
+        "interval": 4,
+        "smooth-scrolling-threshold": 1,
         "format": "{icon}",
         "format-alt": "{percent}% {icon}",
         "format-alt-click": "click-right",
@@ -53,27 +57,29 @@
         "format": "{icon}",
         "format-alt": "{icon}",
         "format-icons": {
-            "wifi": ["﬉"],
+            "wifi": [""],
             "ethernet": [""],
             "disconnected": [""]
         },
         "format-alt-click": "click-right",
-        "format-wifi": "﬉",
-        "format-ethernet": "",
+        "format-wifi": " {essid}",
+        "format-ethernet": " {ifname}",
         "format-disconnected": "",
         "tooltip-format": "{ifname} via {gwaddr}",
-        "tooltip-format-wifi": "{essid} {signalStrength}% ﬉",
+        "tooltip-format-wifi": "{essid} {signalStrength}% ",
         "tooltip-format-ethernet": "{ifname} {ipaddr} ",
         "tooltip-format-disconnected": "Disconnected",
         "on-click": "gnome-control-center network",
+        "on-click-middle": "blueman-manager",
         "tooltip": true
     },
     "pulseaudio": {
-        "scroll-step": 5,
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
+        "scroll-step": 2,
+        "smooth-scrolling-threshold": 1,
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-bluetooth-muted": " {icon}",
+        "format-muted": "",
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
@@ -91,15 +97,15 @@
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",
-        "max-length": 48,
+        "max-length": 32,
         "format-icons": {
             "spotify": "",
             "default": "🎜"
         },
         "escape": true,
         "on-click": "playerctl play-pause",
-        "on-scroll-down": "playerctl previous",
-        "on-scroll-up": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next",
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"
 
     },
