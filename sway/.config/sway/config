@@ -14,10 +14,11 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term gnome-terminal
+set $term_alt alacritty
 
 # Load color scheme and host specific config
-include "$HOME/.cache/wal/colors-sway"
+# include "$HOME/.cache/wal/colors-sway"
 include "$HOME/.config/sway/config.d/*.conf"
 include "$HOME/.config/sway/$(hostnamectl hostname).conf"
 
@@ -27,8 +28,8 @@ set $bg_alpha $backgrounde5
 set $fg_alpha $foregrounde5
 
 # Define font
-set $font "Roboto 11"
-font pango:$font
+set $font "Roboto 9"
+font $font
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -46,14 +47,14 @@ set $menu_alt dmenu_path | $bemenu | xargs swaymsg exec --
 set $screenshot /usr/share/sway/scripts/grimshot
 set $lock swaylock -fFS --clock --ring-color 01579B --text-color AAAAAA --fade-in 0.4 --effect-blur 12x8
 
-# Startup
-exec eval $(gnome-keyring-daemon --start) && systemctl --user set-environment SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# sway does not set DISPLAY/WAYLAND_DISPLAY in the systemd user environment
+# See FS#63021
+# Adapted from xorg's 50-systemd-user.sh, which achieves a similar goal.
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
 exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec mako --background-color=$bg_alpha --text-color=$foreground \
-		--anchor=bottom-right --progress-color=#666666 \
-		--default-timeout=6000
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+
+exec eval $(gnome-keyring-daemon --start) && systemctl --user set-environment SSH_AUTH_SOCK=$SSH_AUTH_SOCK
 
 # Media keys
 bindsym XF86AudioRaiseVolume    exec barify vol up
@@ -67,23 +68,28 @@ bindsym XF86AudioNext           exec playerctl next
 bindsym XF86AudioPrev           exec playerctl previous
 
 # Screenshots to file
-bindsym Print			exec	$screenshot save screen --notify
-bindsym Mod1+Print		exec	$screenshot save win --notify
-bindsym shift+Print		exec	$screenshot save area --notify
+bindsym Print			exec	$screenshot --notify save screen
+bindsym Mod1+Print		exec	$screenshot --notify save win
+bindsym shift+Print		exec	$screenshot --notify save area
 
 # Screenshots to clipboard
-bindsym ctrl+Print          exec	$screenshot copy screen --notify
-bindsym ctrl+Mod1+Print     exec	$screenshot copy win --notify
-bindsym ctrl+shift+Print    exec	$screenshot copy area --notify
+bindsym ctrl+Print          exec	$screenshot --notify copy screen
+bindsym ctrl+Mod1+Print     exec	$screenshot --notify copy win
+bindsym ctrl+shift+Print    exec	$screenshot --notify copy area
 
 # Style
-default_border pixel 1
+default_border normal 2
+titlebar_border_thickness 0
+titlebar_padding 5 0
+smart_borders on
+gaps inner 24
+gaps outer 32
 
-# Window border colors
-client.focused             $color0 $foreground $background $color7 $foreground
-client.focused_inactive    $color0 $background $foreground $color7 $background
-client.unfocused           $color0 $background $foreground $color7 $background
-client.urgent              $color0 $background $foreground $color7 $background
+# # Window border colors
+# client.focused             $color0 $foreground $background $color7 $foreground
+# client.focused_inactive    $color0 $background $foreground $color7 $background
+# client.unfocused           $color0 $background $foreground $color7 $background
+# client.urgent              $color0 $background $foreground $color7 $background
 
 # Wallpaper
 #output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
@@ -95,9 +101,6 @@ input * {
        xkb_options "caps:escape"
 }
 
-# Gaps
-gaps inner 16
-gaps outer 0
 
 ### Output configuration
 #
@@ -148,6 +151,7 @@ gaps outer 0
 #
     # Start a terminal
     bindsym $mod+Return exec $term
+    bindsym $mod+shift+Return exec $term_alt
 
     # Kill focused window
     bindsym $mod+q kill
@@ -258,12 +262,13 @@ gaps outer 0
 #
 # System Menu
 #
-set $cmd_menu "System: [E]xit - [R]eboot - [S]hutdown - [L]ock"
+set $cmd_menu "System: [E]xit - [R]eboot - [S]uspend - [L]ock - [P]oweroff"
 bindsym $mod+Escape mode $cmd_menu
 mode $cmd_menu {
         bindsym e exec sway exit
         bindsym r exec systemctl reboot
-        bindsym s exec systemctl poweroff
+        bindsym p exec systemctl poweroff
+        bindsym s exec systemctl suspend; mode "default"
         bindsym l exec $lock; mode "default"
         bindsym Return mode "default"
         bindsym Escape mode "default"
