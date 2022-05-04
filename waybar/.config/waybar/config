@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/media", "idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
+    "modules-right": ["custom/media", "custom/darkmode", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
     "sway/window": {
         "max-length": 30
     },
@@ -107,6 +107,17 @@
         "on-click-middle": "playerctl previous",
         "on-click-right": "playerctl next",
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"
+
+    },
+    "custom/darkmode": {
+        "format": "{icon} {}",
+        "format-icons": {
+            "default": ""
+        },
+        "max-length": 10,
+        "interval": 5,
+        "on-click": "darkman toggle",
+        "exec": "sleep 0.1; darkman get"
 
     },
     "wlr/taskbar": {

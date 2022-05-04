@@ -38,8 +38,8 @@ window#waybar.empty {
 #workspaces button {
     margin-left: 3px;
     padding: 6px;
-    background: #80CBC4;
-    color: black;
+    background: #454545;
+    color: #ffffff;
 }
 
 
@@ -71,6 +71,7 @@ window#waybar.empty {
 #custom-media,
 #tray,
 #mode,
+#custom-darkmode,
 #idle_inhibitor {
     padding: 0 10px;
     margin: 0 4px;
