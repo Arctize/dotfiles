@@ -2,8 +2,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*) ;;
-	*) return ;;
+*i*) ;;
+*) return ;;
 esac
 
 # Don't put duplicate lines or lines starting with space in the history.
@@ -14,8 +14,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=150000
-HISTFILESIZE=""
+export HISTSIZE=-1
+export HISTFILESIZE=-1
 
 # Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -56,7 +56,11 @@ blue="\[\e[34;1m\]"
 grey="\[\e[37;1m\]"
 off="\[\033[m\]"
 
-source /usr/share/git/git-prompt.sh 2>/dev/null || source /usr/share/git-core/contrib/completion/git-prompt.sh
+# Source the git prompt in a trillion different ways because why on earth would
+# distros ever have it packaged similarly
+source /usr/share/git/git-prompt.sh 2>/dev/null ||                          # Arch
+	source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null || # Fedora
+	source /usr/lib/git-core/git-sh-prompt 2>/dev/null                         # Ubuntu / Debian
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
@@ -100,10 +104,6 @@ alias o='rifle $(fzf)'
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
-alias peerflix='peerflix --mpv'
-
-# mimeopen uses the TERMINAL variable
-export TERMINAL='st -f "ubuntu mono:size=12" -e'
 
 # Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -117,7 +117,6 @@ if ! shopt -oq posix; then
 fi
 
 # Either load wal theme or enable scripts for base16 color schemes when running st
-#if [ "$TERM" == "st-256color" ] || [ "$TERM" == "xterm-256color" ]; then
 if [ "$TERM" == "st-256color" ] || [ "$TERM" == "alacritty" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
 		(cat ~/.cache/wal/sequences &)
