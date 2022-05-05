@@ -16,6 +16,8 @@ shopt -s histappend
 # For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTSIZE=-1
 export HISTFILESIZE=-1
+# http://superuser.com/questions/20900/bash-history-loss
+export HISTFILE=~/.bash_eternal_history
 
 # Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
