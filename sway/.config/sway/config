@@ -52,7 +52,7 @@ set $lock swaylock -fFS --clock --ring-color 01579B --text-color AAAAAA --fade-i
 # Adapted from xorg's 50-systemd-user.sh, which achieves a similar goal.
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
 exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
 
 exec eval $(gnome-keyring-daemon --start) && systemctl --user set-environment SSH_AUTH_SOCK=$SSH_AUTH_SOCK
 
