@@ -55,6 +55,7 @@ bold="\[\033[1m\]"
 red="\[\033[1;31m\]"
 green="\[\e[32;1m\]"
 blue="\[\e[34;1m\]"
+purple="\[\e[35;1m\]"
 grey="\[\e[37;1m\]"
 off="\[\033[m\]"
 
@@ -73,12 +74,24 @@ function setprompt() {
 
 	# Check exit status of last command and change the color accordingly
 	if [ $? -eq 0 ]; then
-		statuscolor="$green"
+		local status="$green\$"
 	else
-		statuscolor="$red"
+		local status="$red\$"
 	fi
 
-	PS1="$bold\h $blue\w$off$(__git_ps1) $statuscolor\$ $off"
+	local host="\h"
+	# Display indicator when in a toolbox: 🛠
+	if [[ -f /run/.containerenv && -f /run/.toolboxenv ]]; then
+		local name
+		eval $(cat /run/.containerenv | grep "^name=")
+		local host="$name"
+		local session_type_indicator="$purple🛠 $off"
+	# and another one when in an SSH session: 🖧
+	elif [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+		local session_type_indicator="$purple🖧 $off"
+	fi
+
+	PS1="$session_type_indicator$bold$host $blue\w$off$(__git_ps1) $status $off"
 	PS2="$bold>$off "
 
 	echo -e -n "\x1b[\x36 q"
