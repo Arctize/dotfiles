@@ -115,10 +115,10 @@
             "default": ""
         },
         "max-length": 10,
-        "interval": 5,
+        "interval": "once",
+        "signal": 9,
         "on-click": "darkman toggle",
-        "exec": "sleep 0.1; darkman get"
-
+        "exec": "darkman get"
     },
     "wlr/taskbar": {
         "format": "{icon}",
