@@ -131,6 +131,17 @@ if ! shopt -oq posix; then
 	fi
 fi
 
+# Arch and Debian/Ubuntu package /usr/share/bash-completion/completions/kubectl
+# Fedora does not, in that case source it manually
+hash kubectl 2>/dev/null &&
+	[ ! -e /usr/share/bash-completion/completions/kubectl ] &&
+	source <(kubectl completion bash)
+
+# Similar story for helm
+hash helm 2>/dev/null &&
+	[ ! -e /usr/share/bash-completion/completions/helm ] &&
+	source <(helm completion bash)
+
 # Either load wal theme or enable scripts for base16 color schemes when running st
 if [ "$TERM" == "st-256color" ] || [ "$TERM" == "alacritty" ]; then
 	if [ -e ~/.cache/wal/sequences ]; then
