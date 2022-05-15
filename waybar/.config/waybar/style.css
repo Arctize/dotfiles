@@ -68,9 +68,10 @@ window#waybar.empty {
 #backlight,
 #network,
 #pulseaudio,
-#custom-media,
 #tray,
 #mode,
+#custom-media,
+#custom-screencast,
 #custom-darkmode,
 #idle_inhibitor {
     padding: 0 10px;
@@ -78,6 +79,12 @@ window#waybar.empty {
     /* background-color: #4b5162; */
     background-color: #454545;
     color: #ffffff;
+}
+
+#custom-screencast {
+    padding-top: 5px;
+    color: #000000;
+    background-color: orange;
 }
 
 #battery.charging,
@@ -117,6 +124,7 @@ label:focus {
 }
 
 #custom-media {
+    padding-top: 5px;
     background-color: #3b4d7e;
     color: #ffffff;
     min-width: 100px;

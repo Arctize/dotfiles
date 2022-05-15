@@ -1,0 +1,5 @@
+[screencast]
+exec_before=pkill -RTMIN+8 waybar
+exec_after=pkill -RTMIN+8 waybar
+chooser_type=simple
+chooser_cmd=slurp -f %o -or; sleep .5; pkill -RTMIN+8 waybar

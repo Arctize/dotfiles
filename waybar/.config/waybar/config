@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/media", "custom/darkmode", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
+    "modules-right": ["custom/media", "custom/screencast", "custom/darkmode", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
     "sway/window": {
         "max-length": 30
     },
@@ -108,6 +108,16 @@
         "on-click-right": "playerctl next",
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"
 
+    },
+    "custom/screencast": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": "🖵➦"
+        },
+        "interval": 10,
+        "signal": 8,
+        "on-click": "pkill -RTMIN+8 waybar",
+        "exec": "~/.config/waybar/is-wlr-portal-recording"
     },
     "custom/darkmode": {
         "format": "{icon} {}",

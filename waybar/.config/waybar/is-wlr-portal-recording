@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+# HACK: requires loglevel of xdg-desktop-portal-wlr set to INFO
+log=$(journalctl --user -b -u xdg-desktop-portal-wlr -g 'stream state.*(streaming|unconnected)')
+[[ $(echo "${log}" | tail -n1) == *"streaming"* ]]
+echo "Streaming"
