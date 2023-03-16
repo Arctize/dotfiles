@@ -96,7 +96,7 @@ function setprompt() {
 	PS1="$session_type_indicator$bold$host $blue\w$off$(__git_ps1) $status $off"
 	PS2="$bold>$off "
 
-	echo -e -n "\x1b[\x36 q"
+	echo -en '\e[5 q'
 }
 
 PROMPT_DIRTRIM=3
