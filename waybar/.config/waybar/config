@@ -1,7 +1,14 @@
 {
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
+    "modules-left": ["sway/workspaces", "hyprland/workspaces", "sway/mode"],
+    "modules-center": ["hyprland/window", "sway/window"],
     "modules-right": ["custom/media", "custom/screencast", "custom/darkmode", "pulseaudio", "network", "cpu", "memory", "backlight", "battery", "clock", "tray"],
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1"
+    },
+    "hyprland/window": {
+        "separate-outputs": true
+    },
     "sway/window": {
         "max-length": 30
     },
@@ -112,7 +119,7 @@
     "custom/screencast": {
         "format": "{icon}",
         "format-icons": {
-            "default": "🖵➦"
+            "default": "🖵"
         },
         "interval": 10,
         "signal": 8,

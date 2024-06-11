@@ -1,6 +1,6 @@
 * {
     border: none;
-    border-radius: 16px;
+    border-radius: 8px;
     /* otf-font-awesome is required to be installed for icons */
     font-size: 13px;
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -51,7 +51,14 @@ window#waybar.empty {
     box-shadow: inherit;
 }
 
+/* Sway */
 #workspaces button.focused {
+    background-color: #2962FF;
+    color: white
+}
+
+/* Hyprland */
+#workspaces button.active {
     background-color: #2962FF;
     color: white
 }
