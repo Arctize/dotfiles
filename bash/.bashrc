@@ -76,25 +76,28 @@ function setprompt() {
 
 	# Check exit status of last command and change the color accordingly
 	if [ $? -eq 0 ]; then
-		local status="$green\$"
+		local status="${green}\$"
 	else
-		local status="$red\$"
+		local status="${red}\$"
 	fi
 
+	local session_type=
 	local host="\h"
-	# Display indicator when in a toolbox: 🛠
-	if [[ -f /run/.containerenv && -f /run/.toolboxenv ]]; then
-		local name
-		eval $(cat /run/.containerenv | grep "^name=")
-		local host="$name"
-		local session_type_indicator="$purple🛠 $off"
-	# and another one when in an SSH session: 🖧
+
+	if [[ -f /run/.containerenv ]]; then
+		session_type="🐳"
+		if [[ -f /run/.toolboxenv ]]; then
+			session_type="${red}🛠 ${off}"
+			host=$(grep "^name=" /run/.containerenv | cut -d'=' -f2 | tr -d '"')
+		fi
 	elif [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-		local session_type_indicator="$purple🖧 $off"
+		session_type="${purple}🖧 ${off}"
 	fi
 
-	PS1="$session_type_indicator$bold$host $blue\w$off$(__git_ps1) $status $off"
-	PS2="$bold>$off "
+	title="\e]0;\u@${host} \w\a"
+	prompt="${session_type}${bold}${host} ${blue}\w${off}$(__git_ps1) ${status} ${off}"
+	PS1="${title}${prompt}"
+	PS2="${bold}>${off} "
 
 	echo -en '\e[5 q'
 }
@@ -121,6 +124,7 @@ alias o='rifle $(fzf)'
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
+alias gipfl='git push --force-with-lease' # 🥐
 
 # Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
