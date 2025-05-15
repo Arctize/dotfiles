@@ -98,9 +98,12 @@ function setprompt() {
 		session_type="${purple}🖧 ${off}"
 	fi
 
-	title="\e]0;\u@${host} \w\a"
-	prompt="${session_type}${bold}${host} ${blue}\w${off}$(__git_ps1) ${status} ${off}"
-	PS1="${title}${prompt}"
+	title_prompt="\u@${host} \w"
+	title="\[\e]2;${title_prompt}a\]"
+
+	shell_prompt="${session_type}${bold}${host} ${blue}\w${off}$(__git_ps1) ${status} ${off}"
+
+	PS1="${title}${shell_prompt}"
 	PS2="${bold}>${off} "
 
 	# Cursor blink
