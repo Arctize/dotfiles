@@ -1,10 +1,7 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+#!/bin/bash
 
 # If not running interactively, don't do anything
-case $- in
-*i*) ;;
-*) return ;;
-esac
+[[ $- != *i* ]] && return
 
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -63,9 +60,15 @@ off="\[\033[m\]"
 
 # Source the git prompt in a trillion different ways because why on earth would
 # distros ever have it packaged similarly
-source /usr/share/git/git-prompt.sh 2>/dev/null ||                          # Arch
-	source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null || # Fedora
-	source /usr/lib/git-core/git-sh-prompt 2>/dev/null                         # Ubuntu / Debian
+git_prompt_paths=(
+	"/usr/share/git/git-prompt.sh"                         # Arch
+	"/usr/share/git-core/contrib/completion/git-prompt.sh" # Fedora
+	"/usr/lib/git-core/git-sh-prompt"                      # Ubuntu/Debian
+)
+for f in "${git_prompt_paths[@]}"; do
+	# shellcheck source=/dev/null
+	[ -f "$f" ] && source "$f" && break
+done
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
@@ -84,6 +87,7 @@ function setprompt() {
 	local session_type=
 	local host="\h"
 
+	# Add indicator icon for container and SSH sessions
 	if [[ -f /run/.containerenv ]]; then
 		session_type="🐳"
 		if [[ -f /run/.toolboxenv ]]; then
@@ -99,6 +103,7 @@ function setprompt() {
 	PS1="${title}${prompt}"
 	PS2="${bold}>${off} "
 
+	# Cursor blink
 	echo -en '\e[5 q'
 }
 
