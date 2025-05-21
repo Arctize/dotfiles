@@ -99,7 +99,7 @@ function setprompt() {
 	fi
 
 	title_prompt="\u@${host} \w"
-	title="\[\e]2;${title_prompt}a\]"
+	title="\[\e]0;${title_prompt}\a\]"
 
 	shell_prompt="${session_type}${bold}${host} ${blue}\w${off}$(__git_ps1) ${status} ${off}"
 
